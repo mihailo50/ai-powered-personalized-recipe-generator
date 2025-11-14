@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "ai-recipe-backend"
+version = "0.1.0"
+description = "Backend service for AI-powered personalized recipe generator"
+authors = ["mihailo50 <mihailocvetkovic2@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+django = "5.2.8"
+djangorestframework = "3.16.1"
+langchain = "1.0.5"
+langchain-openai = "1.0.2"
+langchain-community = "0.4.1"
+python-dotenv = "1.2.1"
+httpx = "0.28.1"
+dj-database-url = "3.0.1"
+supabase = "2.24.0"
+psycopg = { version = "3.2.12", extras = ["binary"] }
+django-cors-headers = "4.9.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
