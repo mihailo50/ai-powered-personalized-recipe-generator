@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
-import { useSupabase } from "@/components/providers/SupabaseProvider";
+import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
 
 export default function DashboardPage() {
   const { session } = useSupabase();
@@ -48,6 +49,7 @@ export default function DashboardPage() {
       </Stack>
       <RecipePlanner />
       <HistoryPanel />
+      <SavedRecipesPanel />
     </Container>
   );
 }
