@@ -19,7 +19,8 @@ dj-database-url = "3.0.1"
 supabase = "2.24.0"
 psycopg = { version = "3.2.12", extras = ["binary"] }
 django-cors-headers = "4.9.0"
+gunicorn = "22.0.0"
 
-gunicorn = "22.0.0"`r`n`r`n[build-system]
+[build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
