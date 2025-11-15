@@ -12,19 +12,13 @@ export async function createSupabaseServerClient() {
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      get(name) {
-        return cookieStore.get(name);
+      get(name: string) {
+        return cookieStore.get(name)?.value;
       },
       set() {
         // No-op: Next.js forbids mutating cookies during server component render.
       },
       remove() {
-        // No-op
-      },
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll() {
         // No-op
       },
     },
