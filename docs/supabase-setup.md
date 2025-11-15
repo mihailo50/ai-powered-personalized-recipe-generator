@@ -52,3 +52,4 @@ values (
 Once you confirm connectivity, rotate Supabase service/anon keys and OpenAI credentials that were shared during development. Update `.env` / `.env.local` accordingly.
 
 
+
