@@ -7,6 +7,9 @@ from .views import (
     RecipeSuggestionView,
     SearchHistoryView,
     RegistrationView,
+    ProfileView,
+    RecommendationView,
+    LogoutView,
 )
 
 
