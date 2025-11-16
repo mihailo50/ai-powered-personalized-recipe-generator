@@ -4,10 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { checkAuthStatus } from "@/lib/api-client";
-import { createClient } from "@/lib/supabase/browser";
 
 export function Navbar() {
-  const { session } = useSupabase();
+  const { session, supabase } = useSupabase();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +26,6 @@ export function Navbar() {
   }, [session?.access_token]);
 
   async function handleLogout() {
-    const supabase = createClient();
     await supabase.auth.signOut();
     window.location.href = "/login";
   }
