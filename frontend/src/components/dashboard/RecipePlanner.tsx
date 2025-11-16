@@ -98,53 +98,73 @@ export function RecipePlanner() {
 
   return (
     <Box component="section" className="section-card" sx={{ position: "relative" }}>
-      <Stack spacing={3} component="form" onSubmit={handleSubmit}>
-        <div>
+      <Stack spacing={3} component="form" onSubmit={handleSubmit} sx={{ alignItems: "center" }}>
+        <div style={{ textAlign: "center", maxWidth: "800px" }}>
           <Typography variant="h3" fontWeight={600}>
-            Plan tonight’s meal
+            Plan tonight's meal
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 560 }}>
-            Feed us your pantry list and preferences. We’ll craft a complete recipe, nutrition snapshot, and shopping
+          <Typography variant="body1" color="text.secondary">
+            Feed us your pantry list and preferences. We'll craft a complete recipe, nutrition snapshot, and shopping
             cues.
           </Typography>
         </div>
 
-        <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <TextField
-              variant="outlined"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "12px",
-                  "& fieldset": { borderColor: "var(--color-border)" },
-                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
-                },
-                "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
-              }}
-              label="Ingredients on hand"
-              helperText="Comma-separated list"
-              fullWidth
-              placeholder="e.g. tofu, chickpeas, baby spinach"
-              value={ingredients}
-              onChange={(event) => setIngredients(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Autocomplete
-              multiple
-              freeSolo
-              options={dietSuggestions}
-              value={dietSelections}
-              onChange={(_event, newValue) => setDietSelections(newValue)}
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => (
-                  <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                ))
-              }
-              renderInput={(params) => (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{ width: "100%", maxWidth: "800px" }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
                 <TextField
-                  {...params}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      "& fieldset": { borderColor: "var(--color-border)" },
+                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                    },
+                    "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
+                  }}
+                  label="Ingredients on hand"
+                  helperText="Comma-separated list"
+                  fullWidth
+                  placeholder="e.g. tofu, chickpeas, baby spinach"
+                  value={ingredients}
+                  onChange={(event) => setIngredients(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={dietSuggestions}
+                  value={dietSelections}
+                  onChange={(_event, newValue) => setDietSelections(newValue)}
+                  renderTags={(value: readonly string[], getTagProps) =>
+                    value.map((option: string, index: number) => (
+                      <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          "& fieldset": { borderColor: "var(--color-border)" },
+                          "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                          "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                        },
+                      }}
+                      label="Diet preferences"
+                      placeholder="Tap to pick or type (e.g. vegan)"
+                      helperText="Choose from suggestions or write your own"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <TextField
                   variant="outlined"
                   sx={{
                     "& .MuiOutlinedInput-root": {
@@ -154,63 +174,53 @@ export function RecipePlanner() {
                       "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
                     },
                   }}
-                  label="Diet preferences"
-                  placeholder="Tap to pick or type (e.g. vegan)"
-                  helperText="Choose from suggestions or write your own"
+                  label="Servings"
+                  type="number"
+                  fullWidth
+                  placeholder="2"
+                  value={servings}
+                  onChange={(event) => setServings(Number(event.target.value))}
                 />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <TextField
-              variant="outlined"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "12px",
-                  "& fieldset": { borderColor: "var(--color-border)" },
-                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
-                },
-              }}
-              label="Servings"
-              type="number"
-              fullWidth
-              placeholder="2"
-              value={servings}
-              onChange={(event) => setServings(Number(event.target.value))}
-            />
-          </Grid>
-          <Grid item xs={12} md={9}>
-            <TextField
-              variant="outlined"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "12px",
-                  "& fieldset": { borderColor: "var(--color-border)" },
-                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
-                },
-                "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
-              }}
-              label="Notes"
-              helperText="Any cravings or constraints?"
-              fullWidth
-              multiline
-              minRows={2}
-              placeholder="e.g. Prefer something under 30 minutes with a citrus note"
-              value={notes}
-              onChange={(event) => setNotes(event.target.value)}
-            />
-          </Grid>
-        </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      "& fieldset": { borderColor: "var(--color-border)" },
+                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                    },
+                    "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
+                  }}
+                  label="Notes"
+                  helperText="Any cravings or constraints?"
+                  fullWidth
+                  multiline
+                  minRows={2}
+                  placeholder="e.g. Prefer something under 30 minutes with a citrus note"
+                  value={notes}
+                  onChange={(event) => setNotes(event.target.value)}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
 
-        <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center">
-          {dietPreferenceChips.map((chip) => (
-            <Chip key={chip} label={chip} color="primary" variant="outlined" />
-          ))}
-        </Stack>
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%", maxWidth: "800px" }}>
+          <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center">
+            {dietPreferenceChips.map((chip) => (
+              <Chip key={chip} label={chip} color="primary" variant="outlined" />
+            ))}
+          </Stack>
+        </Box>
 
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && (
+          <Box sx={{ display: "flex", justifyContent: "center", width: "100%", maxWidth: "800px" }}>
+            <Alert severity="error" sx={{ width: "100%" }}>{error}</Alert>
+          </Box>
+        )}
 
         <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
           <button
