@@ -58,9 +58,6 @@ export default function DashboardPage() {
           >
             Logout
           </Button>
-          <Typography variant="body2" color="text.secondary">
-            Need the marketing site?
-          </Typography>
           <Link href="/" style={{ color: "#4f46e5" }}>
             Return home
           </Link>
