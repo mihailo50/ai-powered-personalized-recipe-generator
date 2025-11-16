@@ -9,6 +9,7 @@ import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
 import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
+import { ProfilePanel } from "@/components/dashboard/ProfilePanel";
 
 export default function DashboardPage() {
   const { session } = useSupabase();
@@ -50,6 +51,7 @@ export default function DashboardPage() {
       <RecipePlanner />
       <HistoryPanel />
       <SavedRecipesPanel />
+      <ProfilePanel />
     </Container>
   );
 }

@@ -73,3 +73,14 @@ export function registerUser(payload: { email: string; password: string; confirm
   });
 }
 
+export function getProfile(token: string) {
+  return request<{ profile: unknown }>("/profile/", { method: "GET" }, token);
+}
+
+export function updateProfile(
+  payload: { display_name?: string; avatar_url?: string; diet_preferences?: string[]; allergens?: string[]; calorie_target?: number | null },
+  token: string,
+) {
+  return request<{ profile: unknown }>("/profile/", { method: "PUT", body: JSON.stringify(payload) }, token);
+}
+

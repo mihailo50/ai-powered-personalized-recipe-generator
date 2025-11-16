@@ -127,6 +127,22 @@ class SupabaseRepository:
         data = getattr(response, "data", []) or []
         return {item.get("recipe_id") for item in data if item.get("recipe_id")}
 
+    # Profiles ---------------------------------------------------------------
+    def get_profile(self, user_id: str) -> Dict[str, Any]:
+        response = (
+            self.client.table("profiles")
+            .select("*")
+            .eq("id", user_id)
+            .single()
+            .execute()
+        )
+        return getattr(response, "data", {}) or {}
+
+    def upsert_profile(self, user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        payload = {"id": user_id, **data}
+        response = self.client.table("profiles").upsert(payload).select("*").single().execute()
+        return getattr(response, "data", {}) or {}
+
 
 __all__ = ["SupabaseRepository", "SupabaseConfigurationError"]
 

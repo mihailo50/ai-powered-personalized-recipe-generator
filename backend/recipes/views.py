@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from .authentication import SupabaseJWTAuthentication
 from .serializers import (
     FavoriteToggleSerializer,
+    ProfileUpdateSerializer,
     RecipeListQuerySerializer,
     RecipeSuggestionRequestSerializer,
     RegistrationSerializer,
@@ -178,6 +179,27 @@ class FavoriteToggleView(SupabaseProtectedAPIView):
             {"status": "added" if add else "removed"},
             status=status.HTTP_200_OK,
         )
+
+
+class ProfileView(SupabaseProtectedAPIView):
+
+    def get(self, request):
+        try:
+            repo = SupabaseRepository()
+        except SupabaseConfigurationError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        profile = repo.get_profile(request.user.id)
+        return Response({"profile": profile}, status=status.HTTP_200_OK)
+
+    def put(self, request):
+        serializer = ProfileUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            repo = SupabaseRepository()
+        except SupabaseConfigurationError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        profile = repo.upsert_profile(request.user.id, serializer.validated_data)
+        return Response({"profile": profile}, status=status.HTTP_200_OK)
 
 
 class RegistrationView(APIView):
