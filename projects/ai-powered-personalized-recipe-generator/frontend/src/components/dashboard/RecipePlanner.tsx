@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Chip,
-  Chip,
   CircularProgress,
   Divider,
   Fade,
