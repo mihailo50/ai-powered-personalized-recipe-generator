@@ -34,14 +34,30 @@ export default function RootLayout({
 }>) {
   const lang = (typeof window === "undefined"
     ? "en"
-    : (localStorage.getItem("lang") as Lang) || "en") as Lang;
+    : ((localStorage.getItem("lang") as Lang) || "en")) as Lang;
   const t = (key: string) => dictionary[lang][key] ?? key;
 
   return (
     <html lang={lang}>
       <body className={`${montserrat.variable} ${geistMono.variable}`}>
+        <div className="app-nav">
+          <div className="bar">
+            <a className="nav-link" href="/dashboard">AI Recipe Studio</a>
+            <div className="nav-actions">
+              <a className="nav-btn" href="/dashboard">Home</a>
+              <a className="nav-btn" href="/profile">Profile</a>
+              <a className="nav-btn" href="/login">Logout</a>
+              <a className="info-icon" href="/" title="Marketing site">i</a>
+            </div>
+          </div>
+        </div>
         <SupabaseProvider initialSession={null}>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <main style={{ maxWidth: 1200, margin: "0 auto", padding: "20px" }}>{children}</main>
+            <footer className="footer">
+              <div>© {new Date().getFullYear()} <strong>AI Recipe Studio</strong> · <a className="nav-link" href="/terms">Terms</a> · <a className="nav-link" href="/privacy">Privacy</a></div>
+            </footer>
+          </ThemeRegistry>
         </SupabaseProvider>
       </body>
     </html>
