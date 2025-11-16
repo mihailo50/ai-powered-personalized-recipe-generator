@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -9,11 +9,12 @@ import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
 import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
-import { ProfilePanel } from "@/components/dashboard/ProfilePanel";
+// profile moved to its own page
 import { backendLogout } from "@/lib/api-client";
 
 export default function DashboardPage() {
-  const { session } = useSupabase();
+  const { session, ...ctx } = useSupabase() as any;
+  const supabase = (ctx as any).supabase;
   const router = useRouter();
 
   useEffect(() => {
@@ -41,18 +42,22 @@ export default function DashboardPage() {
           </Typography>
         </div>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          <button
+          <Button component={Link} href="/profile" variant="outlined" size="small">
+            Profile
+          </Button>
+          <Button
+            variant="text"
             onClick={async () => {
               try {
-                await backendLogout();
-              } catch {}
-              // client-side sign out
-              window.location.href = "/login";
+                await supabase?.auth?.signOut?.();
+                await backendLogout().catch(() => {});
+              } finally {
+                window.location.href = "/login";
+              }
             }}
-            style={{ color: "#4f46e5", background: "transparent", border: "none", cursor: "pointer" }}
           >
             Logout
-          </button>
+          </Button>
           <Typography variant="body2" color="text.secondary">
             Need the marketing site?
           </Typography>
@@ -64,7 +69,6 @@ export default function DashboardPage() {
       <RecipePlanner />
       <HistoryPanel />
       <SavedRecipesPanel />
-      <ProfilePanel />
     </Container>
   );
 }
