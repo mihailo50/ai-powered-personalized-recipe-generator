@@ -30,6 +30,10 @@ export function Navbar() {
     window.location.href = "/login";
   }
 
+  if (isLoading || !isLoggedIn) {
+    return null;
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -40,20 +44,12 @@ export function Navbar() {
           <Link href="/dashboard" className="navbar-btn">
             Home
           </Link>
-          {isLoggedIn ? (
-            <>
-              <Link href="/profile" className="navbar-btn">
-                Profile
-              </Link>
-              <button onClick={handleLogout} className="navbar-btn">
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link href="/login" className="navbar-btn">
-              Sign in
-            </Link>
-          )}
+          <Link href="/profile" className="navbar-btn">
+            Profile
+          </Link>
+          <button onClick={handleLogout} className="navbar-btn">
+            Logout
+          </button>
         </div>
       </div>
     </nav>
