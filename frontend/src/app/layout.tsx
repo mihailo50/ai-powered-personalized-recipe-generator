@@ -47,7 +47,6 @@ export default function RootLayout({
               <a className="nav-btn" href="/dashboard">Home</a>
               <a className="nav-btn" href="/profile">Profile</a>
               <a className="nav-btn" href="/login">Logout</a>
-              <a className="info-icon" href="/" title="Marketing site">i</a>
             </div>
           </div>
         </div>
