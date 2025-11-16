@@ -109,7 +109,7 @@ export function RecipePlanner() {
           </Typography>
         </div>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} md={6}>
             <TextField
               variant="outlined"
@@ -180,7 +180,7 @@ export function RecipePlanner() {
               onChange={(event) => setServings(Number(event.target.value))}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={9}>
             <TextField
               variant="outlined"
               sx={{
@@ -204,7 +204,7 @@ export function RecipePlanner() {
           </Grid>
         </Grid>
 
-        <Stack direction="row" spacing={1} flexWrap="wrap">
+        <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center">
           {dietPreferenceChips.map((chip) => (
             <Chip key={chip} label={chip} color="primary" variant="outlined" />
           ))}
@@ -212,14 +212,15 @@ export function RecipePlanner() {
 
         {error && <Alert severity="error">{error}</Alert>}
 
-        <button
-          type="submit"
-          className="btn-primary"
-          disabled={isLoading}
-          style={{ marginTop: "16px" }}
-        >
-          {isLoading ? "Thinking..." : "Generate Recipe"}
-        </button>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={isLoading}
+          >
+            {isLoading ? "Thinking..." : "Generate Recipe"}
+          </button>
+        </div>
       </Stack>
 
       <Fade in={isLoading} unmountOnExit>
