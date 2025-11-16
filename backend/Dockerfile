@@ -16,8 +16,7 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 ENV PORT=8000
-
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -36,7 +35,6 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 ENV PORT=8000
-
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
 
 
