@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Chip,
+  Chip,
   CircularProgress,
   Divider,
   Fade,
@@ -43,6 +44,12 @@ export function RecipePlanner() {
 
   const token = session?.access_token;
 
+  const banned = ["fuck", "shit", "porn", "violence", "weapon", "drug"]; // simple prompt guard
+  function containsBanned(text: string) {
+    const lower = text.toLowerCase();
+    return banned.some((w) => lower.includes(w));
+  }
+
   const dietPreferenceChips = useMemo(
     () => dietSelections.map((item) => item.trim()).filter(Boolean),
     [dietSelections],
@@ -64,6 +71,10 @@ export function RecipePlanner() {
     event.preventDefault();
     if (!token) {
       setError("You must be signed in to generate recipes.");
+      return;
+    }
+    if (containsBanned(ingredients) || containsBanned(notes)) {
+      setError("Please keep prompts food-related and respectful.");
       return;
     }
 

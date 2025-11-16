@@ -19,6 +19,8 @@ urlpatterns = [
     path("history/", SearchHistoryView.as_view(), name="search-history"),
     path("favorites/", FavoriteToggleView.as_view(), name="favorite-toggle"),
     path("profile/", ProfileView.as_view(), name="profile"),
+    path("recommendations/", RecommendationView.as_view(), name="recommendations"),
+    path("auth/logout/", LogoutView.as_view(), name="auth-logout"),
     path("auth/register/", RegistrationView.as_view(), name="auth-register"),
 ]
 

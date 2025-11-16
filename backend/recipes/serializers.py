@@ -30,6 +30,18 @@ class RecipeSuggestionRequestSerializer(serializers.Serializer):
     servings = serializers.IntegerField(required=False, min_value=1, default=2)
     notes = serializers.CharField(required=False, allow_blank=True)
 
+    def validate(self, attrs):
+        text = " ".join(
+            [
+                " ".join(attrs.get("ingredients", [])),
+                attrs.get("notes") or "",
+            ]
+        ).lower()
+        banned = {"fuck", "shit", "porn", "violence", "weapon", "drug"}
+        if any(w in text for w in banned):
+            raise serializers.ValidationError({"notes": "Please keep prompts food-related and respectful."})
+        return attrs
+
 
 class RecipeListQuerySerializer(serializers.Serializer):
     limit = serializers.IntegerField(required=False, min_value=1, max_value=50, default=20)

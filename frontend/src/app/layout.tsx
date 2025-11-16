@@ -4,6 +4,7 @@ import { Montserrat } from "next/font/google";
 
 import { ThemeRegistry } from "@/components/ThemeRegistry";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
+import { dictionary, type Lang } from "@/i18n/i18n";
 
 import "./globals.css";
 
@@ -31,8 +32,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = (typeof window === "undefined"
+    ? "en"
+    : (localStorage.getItem("lang") as Lang) || "en") as Lang;
+  const t = (key: string) => dictionary[lang][key] ?? key;
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className={`${montserrat.variable} ${geistMono.variable}`}>
         <SupabaseProvider initialSession={null}>
           <ThemeRegistry>{children}</ThemeRegistry>

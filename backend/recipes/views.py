@@ -246,3 +246,43 @@ class RegistrationView(APIView):
             {"message": "Account created. Please check your inbox to confirm email."},
             status=status.HTTP_201_CREATED,
         )
+
+
+class RecommendationView(SupabaseProtectedAPIView):
+    """
+    Very lightweight recommender based on frequency of ingredients
+    in a user's search history. It returns a list of suggested tags/ingredients.
+    """
+
+    def get(self, request):
+        try:
+            repo = SupabaseRepository()
+        except SupabaseConfigurationError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        history = repo.list_history(request.user.id, limit=100)
+        counts: dict[str, int] = {}
+        for item in history:
+            for ing in (item.get("ingredients") or []):
+                if not isinstance(ing, str):
+                    continue
+                key = ing.strip().lower()
+                if not key:
+                    continue
+                counts[key] = counts.get(key, 0) + 1
+        # top-N ingredients
+        suggestions = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)[:10]
+        return Response({"suggestions": [name for name, _ in suggestions]}, status=status.HTTP_200_OK)
+
+
+class LogoutView(APIView):
+    """
+    Stateless logout endpoint. Frontend should clear Supabase session.
+    Provided for symmetry and future auditing if needed.
+    """
+
+    authentication_classes: list = []
+    permission_classes: list = []
+
+    def post(self, _request):
+        return Response({"status": "ok"}, status=status.HTTP_200_OK)

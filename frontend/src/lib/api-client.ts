@@ -84,3 +84,12 @@ export function updateProfile(
   return request<{ profile: unknown }>("/profile/", { method: "PUT", body: JSON.stringify(payload) }, token);
 }
 
+export function getRecommendations(token: string) {
+  return request<{ suggestions: string[] }>("/recommendations/", { method: "GET" }, token);
+}
+
+export function backendLogout() {
+  // optional call - backend is stateless; this exists for future auditing
+  return request<{ status: string }>("/auth/logout/", { method: "POST" });
+}
+

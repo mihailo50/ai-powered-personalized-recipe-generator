@@ -10,6 +10,7 @@ import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
 import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
 import { ProfilePanel } from "@/components/dashboard/ProfilePanel";
+import { backendLogout } from "@/lib/api-client";
 
 export default function DashboardPage() {
   const { session } = useSupabase();
@@ -39,7 +40,19 @@ export default function DashboardPage() {
             Generate a new recipe, revisit saved ideas, or refine your preferences.
           </Typography>
         </div>
-        <Box>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <button
+            onClick={async () => {
+              try {
+                await backendLogout();
+              } catch {}
+              // client-side sign out
+              window.location.href = "/login";
+            }}
+            style={{ color: "#4f46e5", background: "transparent", border: "none", cursor: "pointer" }}
+          >
+            Logout
+          </button>
           <Typography variant="body2" color="text.secondary">
             Need the marketing site?
           </Typography>
