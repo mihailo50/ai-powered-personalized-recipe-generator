@@ -10,6 +10,7 @@ import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
 import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
 import { ProfilePanel } from "@/components/dashboard/ProfilePanel";
+import { RecommendationsPanel } from "@/components/dashboard/RecommendationsPanel";
 import { backendLogout } from "@/lib/api-client";
 
 export default function DashboardPage() {
@@ -64,6 +65,7 @@ export default function DashboardPage() {
       <RecipePlanner />
       <HistoryPanel />
       <SavedRecipesPanel />
+      <RecommendationsPanel />
       <ProfilePanel />
     </Container>
   );
