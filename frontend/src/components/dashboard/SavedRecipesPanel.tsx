@@ -202,11 +202,13 @@ export function SavedRecipesPanel() {
           );
         })}
         {!isLoading && recipes.length === 0 && (
-          <Alert severity="info">
-            {scope === "favorites"
-              ? "No favorites yet. Save a recipe to see it here."
-              : "You haven’t saved any recipes yet. Generate one to get started."}
-          </Alert>
+          <div style={{ padding: "16px", background: "var(--color-info-bg)", borderRadius: "8px", textAlign: "center" }}>
+            <p style={{ margin: 0, color: "var(--color-muted)" }}>
+              {scope === "favorites"
+                ? "No favorites yet. Save a recipe to see it here."
+                : "You haven't saved any recipes yet. Generate one to get started."}
+            </p>
+          </div>
         )}
       </Stack>
     </Box>

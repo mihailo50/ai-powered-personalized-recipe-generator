@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Paper, Typography } from "@mui/material";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useRouter } from "next/navigation";
@@ -22,15 +21,7 @@ export function AuthForm() {
   }, [session, router]);
 
   return (
-    <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 420 }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Welcome back
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Sign in or create an account to start generating recipes.
-        </Typography>
-      </Box>
+    <div>
       <Auth
         supabaseClient={supabase}
         view="sign_in"
@@ -41,14 +32,21 @@ export function AuthForm() {
           variables: {
             default: {
               colors: {
-                brand: "#4f46e5",
-                brandAccent: "#312e81",
+                brand: "#6B46C1",
+                brandAccent: "#8B5CF6",
+              },
+              space: {
+                buttonPadding: "12px 24px",
+              },
+              radii: {
+                borderRadiusButton: "8px",
+                inputBorderRadius: "8px",
               },
             },
           },
         }}
       />
-    </Paper>
+    </div>
   );
 }
 

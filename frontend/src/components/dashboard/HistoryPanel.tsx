@@ -61,30 +61,24 @@ export function HistoryPanel() {
           {error}
         </Alert>
       )}
-      <Stack spacing={2}>
-        {history.map((item) => (
-          <Card key={item.id} variant="outlined">
-            <CardContent>
-              <Typography variant="subtitle1" fontWeight={600}>
-                {item.query || "Saved search"}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {new Date(item.created_at).toLocaleString()}
-              </Typography>
+      {history.length > 0 && (
+        <ul className="purple-accent" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {history.map((item) => (
+            <li key={item.id} style={{ marginBottom: "12px", padding: "12px", background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "8px" }}>
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>{item.query || "Saved search"}</div>
+              <div style={{ fontSize: "14px", color: "var(--color-muted)" }}>{new Date(item.created_at).toLocaleString()}</div>
               {item.ingredients && (
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  Ingredients: {item.ingredients.join(", ")}
-                </Typography>
+                <div style={{ fontSize: "14px", marginTop: "4px" }}>Ingredients: {item.ingredients.join(", ")}</div>
               )}
-            </CardContent>
-          </Card>
-        ))}
-        {!isLoading && history.length === 0 && (
-          <Alert severity="info" sx={{ bgcolor: "var(--color-info-bg)" }}>
-            No searches yet. Generate a recipe to get started.
-          </Alert>
-        )}
-      </Stack>
+            </li>
+          ))}
+        </ul>
+      )}
+      {!isLoading && history.length === 0 && (
+        <div style={{ padding: "16px", background: "var(--color-info-bg)", borderRadius: "8px", textAlign: "center" }}>
+          <p style={{ margin: 0, color: "var(--color-muted)" }}>No searches yet. Generate a recipe to get started.</p>
+        </div>
+      )}
     </Box>
   );
 }

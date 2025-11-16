@@ -93,3 +93,7 @@ export function backendLogout() {
   return request<{ status: string }>("/auth/logout/", { method: "POST" });
 }
 
+export function checkAuthStatus(token?: string) {
+  return request<{ isLoggedIn: boolean }>("/auth/status/", { method: "GET" }, token);
+}
+

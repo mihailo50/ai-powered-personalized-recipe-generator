@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Container, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
@@ -19,29 +18,21 @@ export default function LoginPage() {
   }, [session, router]);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Stack direction={{ xs: "column", md: "row" }} spacing={6} alignItems="center">
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="overline" color="primary">
-            AI Recipe Studio
-          </Typography>
-          <Typography variant="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            Sign in to personalize your kitchen.
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your
-            pantry.
-          </Typography>
-        </Box>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "24px", maxWidth: "500px", margin: "0 auto" }}>
+      <div className="section-card" style={{ width: "100%" }}>
+        <h1 style={{ marginBottom: "8px", textAlign: "center" }}>Sign in to personalize your kitchen</h1>
+        <p className="muted" style={{ textAlign: "center", marginBottom: "24px" }}>
+          Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your pantry.
+        </p>
         <AuthForm />
-        <Typography variant="body2" color="text.secondary" textAlign="center">
+        <p style={{ textAlign: "center", marginTop: "16px", fontSize: "14px", color: "var(--color-muted)" }}>
           Need an account?{" "}
-          <Link href="/register" style={{ color: "#6c63ff" }}>
+          <Link href="/register" style={{ color: "var(--color-primary)", textDecoration: "none" }}>
             Create one
           </Link>
-        </Typography>
-      </Stack>
-    </Container>
+        </p>
+      </div>
+    </div>
   );
 }
 

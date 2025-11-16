@@ -212,22 +212,14 @@ export function RecipePlanner() {
 
         {error && <Alert severity="error">{error}</Alert>}
 
-        <Button
+        <button
           type="submit"
-          variant="contained"
-          size="large"
+          className="btn-primary"
           disabled={isLoading}
-          sx={{
-            bgcolor: "var(--color-primary)",
-            color: "#fff",
-            boxShadow: "var(--shadow)",
-            "&:hover": { bgcolor: "var(--color-primary-600)" },
-            alignSelf: "flex-start",
-            px: 4,
-          }}
+          style={{ marginTop: "16px" }}
         >
           {isLoading ? "Thinking..." : "Generate Recipe"}
-        </Button>
+        </button>
       </Stack>
 
       <Fade in={isLoading} unmountOnExit>
@@ -267,7 +259,7 @@ export function RecipePlanner() {
               <Typography variant="subtitle1" fontWeight={600}>
                 Ingredients
               </Typography>
-              <ul>
+              <ul className="purple-accent">
                 {result.ingredients?.map((item) => (
                   <li key={item.name}>
                     {item.quantity ? `${item.quantity} ` : ""}
