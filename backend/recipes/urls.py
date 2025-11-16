@@ -24,6 +24,8 @@ urlpatterns = [
     path("profile/", ProfileView.as_view(), name="profile"),
     path("recommendations/", RecommendationView.as_view(), name="recommendations"),
     path("auth/logout/", LogoutView.as_view(), name="auth-logout"),
+    path("auth/status/", AuthStatusView.as_view(), name="auth-status"),
+    path("auth/login/", LoginView.as_view(), name="auth-login"),
     path("auth/register/", RegistrationView.as_view(), name="auth-register"),
 ]
 

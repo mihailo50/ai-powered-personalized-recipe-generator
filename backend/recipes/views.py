@@ -19,6 +19,8 @@ from .services import (
     SupabaseRepository,
     get_supabase_client,
 )
+from django.http import HttpRequest
+import jwt
 
 
 class HealthCheckView(APIView):
@@ -286,3 +288,67 @@ class LogoutView(APIView):
 
     def post(self, _request):
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+
+class AuthStatusView(APIView):
+    """
+    Returns whether the incoming request contains a valid Supabase JWT.
+    Does not raise 401 on failure; always returns JSON with isLoggedIn flag.
+    """
+
+    permission_classes: list = []
+    authentication_classes: list = []
+
+    def get(self, request: HttpRequest):
+        token = None
+        auth = request.META.get("HTTP_AUTHORIZATION") or ""
+        parts = auth.split()
+        if len(parts) == 2 and parts[0].lower() == "bearer":
+            token = parts[1]
+        is_logged_in = False
+        if token:
+            secret = (
+                getattr(settings, "SUPABASE_JWT_SECRET", None)
+                or getattr(settings, "SUPABASE_SERVICE_ROLE_KEY", None)
+                or getattr(settings, "SUPABASE_ANON_KEY", None)
+            )
+            if secret:
+                try:
+                    jwt.decode(token, secret, algorithms=["HS256"], options={"verify_aud": False})
+                    is_logged_in = True
+                except Exception:
+                    is_logged_in = False
+        return Response({"isLoggedIn": is_logged_in}, status=status.HTTP_200_OK)
+
+
+class LoginView(APIView):
+    """
+    Optional server-side login for cases where the frontend wants backend to surface
+    explicit error messages. Returns 200 with tokens on success, 400 with {detail} on failure.
+    """
+
+    permission_classes: list = []
+    authentication_classes: list = []
+
+    def post(self, request):
+        email = request.data.get("email")
+        password = request.data.get("password")
+        if not email or not password:
+            return Response({"detail": "Email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            supabase = get_supabase_client(service_role=False)
+            data = {"email": email, "password": password}
+            result = supabase.auth.sign_in_with_password(data)  # supabase-py v2 API
+            # result may be a dict-like object with 'session' and 'user'
+            session = getattr(result, "session", None) or (result.get("session") if isinstance(result, dict) else None)
+            user = getattr(result, "user", None) or (result.get("user") if isinstance(result, dict) else None)
+            if not session:
+                return Response({"detail": "Invalid credentials."}, status=status.HTTP_400_BAD_REQUEST)
+            payload = {
+                "access_token": getattr(session, "access_token", None) or session.get("access_token"),
+                "refresh_token": getattr(session, "refresh_token", None) or session.get("refresh_token"),
+                "user": user,
+            }
+            return Response(payload, status=status.HTTP_200_OK)
+        except Exception as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
