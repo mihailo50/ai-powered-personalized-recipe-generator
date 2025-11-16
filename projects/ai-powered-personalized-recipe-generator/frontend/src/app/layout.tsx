@@ -5,6 +5,7 @@ import { Montserrat } from "next/font/google";
 import { ThemeRegistry } from "@/components/ThemeRegistry";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 import { dictionary, type Lang } from "@/i18n/i18n";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 import "./globals.css";
 
@@ -42,30 +43,7 @@ export default function RootLayout({
       <body className={`${montserrat.variable} ${geistMono.variable}`}>
         <SupabaseProvider initialSession={null}>
           <ThemeRegistry>
-            <div style={{ position: "fixed", right: 12, top: 12, zIndex: 10, display: "flex", gap: 8 }}>
-              <button
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    localStorage.setItem("lang", "en");
-                    window.location.reload();
-                  }
-                }}
-                style={{ padding: "4px 8px", cursor: "pointer" }}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    localStorage.setItem("lang", "sr");
-                    window.location.reload();
-                  }
-                }}
-                style={{ padding: "4px 8px", cursor: "pointer" }}
-              >
-                SR
-              </button>
-            </div>
+            <LanguageSwitcher />
             {children}
           </ThemeRegistry>
         </SupabaseProvider>
