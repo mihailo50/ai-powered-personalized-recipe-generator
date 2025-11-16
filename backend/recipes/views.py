@@ -203,6 +203,8 @@ class RegistrationView(APIView):
             return Response({"detail": str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         try:
+            # Create the user as unconfirmed so they must verify email,
+            # then send a confirmation invite email via Supabase.
             supabase.auth.admin.create_user(
                 {
                     "email": email,
@@ -210,6 +212,8 @@ class RegistrationView(APIView):
                     "email_confirm": False,
                 }
             )
+            # Ensure the confirmation email is actually sent
+            supabase.auth.admin.invite_user_by_email(email)
         except Exception as exc:  # pragma: no cover - supabase admin raises generic errors
             return Response(
                 {"detail": f"Unable to create account: {exc}"},
