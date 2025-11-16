@@ -111,20 +111,32 @@ export function SavedRecipesPanel() {
   }
 
   return (
-    <Box component="section">
+    <Box component="section" className="section-card">
       <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h5" fontWeight={600}>
           Saved recipes
         </Typography>
         <ToggleButtonGroup
           size="small"
-          color="primary"
           exclusive
           value={scope}
           onChange={(_event, value: Scope | null) => {
             if (value) {
               setScope(value);
             }
+          }}
+          sx={{
+            "& .MuiToggleButton-root": {
+              borderRadius: "9999px",
+              px: 2,
+              borderColor: "var(--color-primary)",
+              color: "var(--color-primary)",
+            },
+            "& .Mui-selected": {
+              bgcolor: "var(--color-primary)",
+              color: "#fff",
+              "&:hover": { bgcolor: "var(--color-primary-600)" },
+            },
           }}
         >
           <ToggleButton value="mine">My recipes</ToggleButton>

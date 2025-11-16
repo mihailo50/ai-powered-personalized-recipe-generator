@@ -97,7 +97,7 @@ export function RecipePlanner() {
   }
 
   return (
-    <Box component="section" sx={{ position: "relative", p: 5, borderRadius: 4, bgcolor: "background.paper" }}>
+    <Box component="section" className="section-card" sx={{ position: "relative" }}>
       <Stack spacing={3} component="form" onSubmit={handleSubmit}>
         <div>
           <Typography variant="h3" fontWeight={600}>
@@ -112,6 +112,16 @@ export function RecipePlanner() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  "& fieldset": { borderColor: "var(--color-border)" },
+                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                },
+                "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
+              }}
               label="Ingredients on hand"
               helperText="Comma-separated list"
               fullWidth
@@ -135,6 +145,15 @@ export function RecipePlanner() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      "& fieldset": { borderColor: "var(--color-border)" },
+                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                    },
+                  }}
                   label="Diet preferences"
                   placeholder="Tap to pick or type (e.g. vegan)"
                   helperText="Choose from suggestions or write your own"
@@ -144,6 +163,15 @@ export function RecipePlanner() {
           </Grid>
           <Grid item xs={12} md={3}>
             <TextField
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  "& fieldset": { borderColor: "var(--color-border)" },
+                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                },
+              }}
               label="Servings"
               type="number"
               fullWidth
@@ -154,6 +182,16 @@ export function RecipePlanner() {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  "& fieldset": { borderColor: "var(--color-border)" },
+                  "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
+                  "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                },
+                "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
+              }}
               label="Notes"
               helperText="Any cravings or constraints?"
               fullWidth
@@ -174,7 +212,20 @@ export function RecipePlanner() {
 
         {error && <Alert severity="error">{error}</Alert>}
 
-        <Button type="submit" variant="contained" size="large" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          disabled={isLoading}
+          sx={{
+            bgcolor: "var(--color-primary)",
+            color: "#fff",
+            boxShadow: "var(--shadow)",
+            "&:hover": { bgcolor: "var(--color-primary-600)" },
+            alignSelf: "flex-start",
+            px: 4,
+          }}
+        >
           {isLoading ? "Thinking..." : "Generate Recipe"}
         </Button>
       </Stack>

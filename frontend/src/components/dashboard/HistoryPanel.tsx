@@ -51,7 +51,7 @@ export function HistoryPanel() {
   }
 
   return (
-    <Box component="section">
+    <Box component="section" className="section-card">
       <Typography variant="h5" fontWeight={600} sx={{ mb: 2 }}>
         Recent searches
       </Typography>
@@ -80,7 +80,9 @@ export function HistoryPanel() {
           </Card>
         ))}
         {!isLoading && history.length === 0 && (
-          <Alert severity="info">No searches yet. Generate a recipe to get started.</Alert>
+          <Alert severity="info" sx={{ bgcolor: "var(--color-info-bg)" }}>
+            No searches yet. Generate a recipe to get started.
+          </Alert>
         )}
       </Stack>
     </Box>
