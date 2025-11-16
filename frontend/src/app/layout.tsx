@@ -34,14 +34,40 @@ export default function RootLayout({
 }>) {
   const lang = (typeof window === "undefined"
     ? "en"
-    : (localStorage.getItem("lang") as Lang) || "en") as Lang;
+    : ((localStorage.getItem("lang") as Lang) || "en")) as Lang;
   const t = (key: string) => dictionary[lang][key] ?? key;
 
   return (
     <html lang={lang}>
       <body className={`${montserrat.variable} ${geistMono.variable}`}>
         <SupabaseProvider initialSession={null}>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <div style={{ position: "fixed", right: 12, top: 12, zIndex: 10, display: "flex", gap: 8 }}>
+              <button
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    localStorage.setItem("lang", "en");
+                    window.location.reload();
+                  }
+                }}
+                style={{ padding: "4px 8px", cursor: "pointer" }}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    localStorage.setItem("lang", "sr");
+                    window.location.reload();
+                  }
+                }}
+                style={{ padding: "4px 8px", cursor: "pointer" }}
+              >
+                SR
+              </button>
+            </div>
+            {children}
+          </ThemeRegistry>
         </SupabaseProvider>
       </body>
     </html>
