@@ -27,7 +27,7 @@ export function SupabaseProvider({ children, initialSession }: SupabaseProviderP
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    } = supabase.auth.onAuthStateChange((_event: string, newSession) => {
       setSession(newSession);
     });
 
