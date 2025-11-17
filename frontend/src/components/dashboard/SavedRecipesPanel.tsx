@@ -128,16 +128,39 @@ export function SavedRecipesPanel() {
             }
           }}
           sx={{
+            gap: 1,
             "& .MuiToggleButton-root": {
               borderRadius: "9999px",
-              px: 2,
+              px: 2.5,
+              py: 0.75,
               borderColor: "var(--color-primary)",
               color: "var(--color-primary)",
+              fontWeight: 500,
+              "&:hover": {
+                backgroundColor: "rgba(139, 92, 246, 0.08)",
+                ".dark &": {
+                  backgroundColor: "rgba(139, 92, 246, 0.15)",
+                },
+              },
+              ".dark &": {
+                borderColor: "#8B5CF6",
+                color: "#8B5CF6",
+                backgroundColor: "transparent",
+              },
             },
             "& .Mui-selected": {
               bgcolor: "var(--color-primary)",
               color: "#fff",
-              "&:hover": { bgcolor: "var(--color-primary-600)" },
+              "&:hover": {
+                bgcolor: "#7C3AED",
+              },
+              ".dark &": {
+                bgcolor: "#8B5CF6",
+                color: "#FFFFFF",
+                "&:hover": {
+                  bgcolor: "#7C3AED",
+                },
+              },
             },
           }}
         >
@@ -155,7 +178,17 @@ export function SavedRecipesPanel() {
         {recipes.map((recipe) => {
           const isFavorite = favoriteIds.has(recipe.id);
           return (
-            <Card key={recipe.id} variant="outlined">
+            <Card
+              key={recipe.id}
+              variant="outlined"
+              sx={{
+                borderRadius: "12px",
+                ".dark &": {
+                  backgroundColor: "#1F2937",
+                  borderColor: "#374151",
+                },
+              }}
+            >
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                   <div>
@@ -190,12 +223,24 @@ export function SavedRecipesPanel() {
                   )}
                 </Stack>
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ gap: 1, px: 2, pb: 2 }}>
                 <Button
                   size="small"
                   variant={isFavorite ? "contained" : "outlined"}
                   color={isFavorite ? "secondary" : "primary"}
                   onClick={() => handleToggleFavorite(recipe.id, isFavorite)}
+                  sx={{
+                    borderRadius: "8px",
+                    fontWeight: 500,
+                    ".dark &": {
+                      borderColor: isFavorite ? undefined : "#8B5CF6",
+                      color: isFavorite ? undefined : "#8B5CF6",
+                      "&:hover": {
+                        backgroundColor: isFavorite ? undefined : "rgba(139, 92, 246, 0.1)",
+                        borderColor: isFavorite ? undefined : "#7C3AED",
+                      },
+                    },
+                  }}
                 >
                   {isFavorite ? t("dashboard.favorited") : t("dashboard.saveToFavorites")}
                 </Button>

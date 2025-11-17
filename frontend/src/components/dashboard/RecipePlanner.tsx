@@ -34,7 +34,7 @@ type GeneratedRecipe = {
 
 export function RecipePlanner() {
   const { session } = useSupabase();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [ingredients, setIngredients] = useState("");
   const [dietSelections, setDietSelections] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -88,6 +88,7 @@ export function RecipePlanner() {
         diet_preferences: dietPreferenceChips,
         notes,
         servings,
+        language: i18n.language || "en",
       };
       const response = await generateRecipe(payload, token);
       setResult(response.recipe as GeneratedRecipe);
@@ -154,6 +155,39 @@ export function RecipePlanner() {
                   />
                 ))
               }
+              ListboxProps={{
+                sx: {
+                  "& .MuiAutocomplete-option": {
+                    color: "#111827",
+                    ".dark &": {
+                      color: "#F9FAFB",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(139, 92, 246, 0.08)",
+                      ".dark &": {
+                        backgroundColor: "rgba(139, 92, 246, 0.15)",
+                      },
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: "rgba(139, 92, 246, 0.12)",
+                      ".dark &": {
+                        backgroundColor: "rgba(139, 92, 246, 0.2)",
+                      },
+                    },
+                  },
+                },
+              }}
+              PaperProps={{
+                sx: {
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: "12px",
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+                  ".dark &": {
+                    backgroundColor: "#1F2937",
+                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+                  },
+                },
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -167,18 +201,44 @@ export function RecipePlanner() {
                       "&.Mui-focused": {
                         backgroundColor: "rgba(139, 92, 246, 0.02)",
                       },
+                      "& .MuiInputBase-input": {
+                        color: "#111827",
+                        ".dark &": {
+                          color: "#F9FAFB",
+                        },
+                      },
                     },
                     ".dark & .MuiOutlinedInput-root": {
                       backgroundColor: "#374151",
                       "& fieldset": { borderColor: "#4B5563" },
+                      "&:hover fieldset": { borderColor: "#8B5CF6" },
                       "&.Mui-focused": {
                         backgroundColor: "rgba(139, 92, 246, 0.1)",
                       },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#8B5CF6",
+                        borderWidth: "2px",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#374151",
+                      ".dark &": {
+                        color: "#9CA3AF",
+                      },
+                      "&.Mui-focused": {
+                        color: "#8B5CF6",
+                      },
+                    },
+                    "& .MuiFormHelperText-root": {
+                      color: "#6B7280",
+                      ".dark &": {
+                        color: "#9CA3AF",
+                      },
                     },
                   }}
-                      label={t("dashboard.dietPreferences")}
-                      placeholder={t("dashboard.dietPlaceholder")}
-                      helperText={t("dashboard.dietHelper")}
+                  label={t("dashboard.dietPreferences")}
+                  placeholder={t("dashboard.dietPlaceholder")}
+                  helperText={t("dashboard.dietHelper")}
                 />
               )}
             />

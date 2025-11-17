@@ -157,17 +157,35 @@ if (!i18n.isInitialized) {
     
     // Check localStorage first (user preference)
     const savedLang = localStorage.getItem("language");
-    if (savedLang && (savedLang === "en" || savedLang === "sr")) {
+    const supportedLanguages = ["en", "sr", "es", "fr", "de", "it", "pt", "ru", "zh", "ja", "ko"];
+    if (savedLang && supportedLanguages.includes(savedLang)) {
       return savedLang;
     }
     
     // Auto-detect from browser
     const browserLang = navigator.language || (navigator as any).userLanguage;
     if (browserLang) {
-      // Check for Serbian (sr, sr-RS, sr-Latn, etc.)
-      if (browserLang.toLowerCase().startsWith("sr")) {
-        return "sr";
+      const langCode = browserLang.toLowerCase().split("-")[0];
+      
+      // Map browser language codes to supported languages
+      const langMap: Record<string, string> = {
+        "en": "en",
+        "sr": "sr",
+        "es": "es",
+        "fr": "fr",
+        "de": "de",
+        "it": "it",
+        "pt": "pt",
+        "ru": "ru",
+        "zh": "zh",
+        "ja": "ja",
+        "ko": "ko",
+      };
+      
+      if (langMap[langCode]) {
+        return langMap[langCode];
       }
+      
       // Check for Serbian country code (RS)
       if (browserLang.includes("RS") || browserLang.includes("rs")) {
         return "sr";
