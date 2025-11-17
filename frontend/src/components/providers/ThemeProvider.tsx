@@ -23,26 +23,30 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   // Detect system preference on mount
   useEffect(() => {
     setMounted(true);
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const savedMode = localStorage.getItem("theme-mode") as ThemeMode | null;
-    
-    if (savedMode) {
-      setModeState(savedMode);
-    } else {
-      setModeState(systemPrefersDark ? "dark" : "light");
+    if (typeof window !== "undefined") {
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const savedMode = localStorage.getItem("theme-mode") as ThemeMode | null;
+      
+      if (savedMode) {
+        setModeState(savedMode);
+      } else {
+        setModeState(systemPrefersDark ? "dark" : "light");
+      }
     }
   }, []);
 
   // Apply theme to document
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || typeof document === "undefined") return;
     
     if (mode === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("theme-mode", mode);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme-mode", mode);
+    }
   }, [mode, mounted]);
 
   const setMode = (newMode: ThemeMode) => {
@@ -53,11 +57,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setModeState((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // Always provide context, even during SSR
   return (
     <ThemeContext.Provider value={{ mode, toggleMode, setMode }}>
       {children}
