@@ -155,6 +155,19 @@ export function RecipePlanner() {
                   />
                 ))
               }
+              componentsProps={{
+                paper: {
+                  sx: {
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+                    ".dark &": {
+                      backgroundColor: "#1F2937",
+                      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+                    },
+                  },
+                },
+              }}
               ListboxProps={{
                 sx: {
                   "& .MuiAutocomplete-option": {
@@ -174,17 +187,6 @@ export function RecipePlanner() {
                         backgroundColor: "rgba(139, 92, 246, 0.2)",
                       },
                     },
-                  },
-                },
-              }}
-              PaperProps={{
-                sx: {
-                  backgroundColor: "#FFFFFF",
-                  borderRadius: "12px",
-                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
-                  ".dark &": {
-                    backgroundColor: "#1F2937",
-                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
                   },
                 },
               }}
