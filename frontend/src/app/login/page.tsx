@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Link from "next/link";
 import { Box, Container, Typography } from "@mui/material";
 
 import { LoginForm } from "@/components/auth/LoginForm";
@@ -130,34 +129,6 @@ function LoginPageContent() {
           <LoginForm showSignUpLink={true} />
         </Box>
       </Container>
-
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          py: 2,
-          textAlign: "center",
-          fontSize: "12px",
-          color: "#9CA3AF",
-          zIndex: 1,
-          ".dark &": {
-            color: "#6B7280",
-          },
-        }}
-      >
-        {t("common.copyright")} ·{" "}
-        <Link href="/terms" style={{ color: "inherit", textDecoration: "none" }}>
-          {t("common.terms")}
-        </Link>{" "}
-        ·{" "}
-        <Link href="/privacy" style={{ color: "inherit", textDecoration: "none" }}>
-          {t("common.privacy")}
-        </Link>
-      </Box>
     </Box>
   );
 }

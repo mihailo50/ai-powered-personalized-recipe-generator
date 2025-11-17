@@ -46,6 +46,9 @@ export default function DashboardPage() {
               fontWeight: 700,
               mb: 1,
               color: "var(--color-text)",
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}
           >
             {t("common.welcome", { name: userName })}

@@ -8,7 +8,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Avatar,
   Divider,
   ListItemIcon,
   ListItemText,
@@ -16,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  AccountCircle,
   Home,
   Person,
   Language,
@@ -59,7 +57,12 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
   }
 
   function handleLanguageClick(event: MouseEvent<HTMLElement>) {
-    setLangMenuAnchor(event.currentTarget);
+    event.stopPropagation();
+    if (langMenuAnchor) {
+      setLangMenuAnchor(null);
+    } else {
+      setLangMenuAnchor(event.currentTarget);
+    }
   }
 
   function handleLanguageClose() {
@@ -80,29 +83,23 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
 
   if (!session) {
     return (
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <IconButton
-          onClick={toggleMode}
-          sx={{
-            color: "#6B7280",
-            "&:hover": { backgroundColor: "rgba(139, 92, 246, 0.1)" },
-          }}
-          aria-label="Toggle dark mode"
-        >
-          {mode === "dark" ? <LightMode /> : <DarkMode />}
-        </IconButton>
-        <Link href="/login" style={{ textDecoration: "none" }}>
-          <IconButton
-            sx={{
-              color: "#6B7280",
-              "&:hover": { backgroundColor: "rgba(139, 92, 246, 0.1)" },
-            }}
-            aria-label="Sign in"
-          >
-            <AccountCircle />
-          </IconButton>
-        </Link>
-      </Box>
+      <IconButton
+        onClick={toggleMode}
+        sx={{
+          color: "#6B7280",
+          "&:hover": { backgroundColor: "rgba(139, 92, 246, 0.1)" },
+          ".dark &": {
+            color: "#9CA3AF",
+            "&:hover": {
+              backgroundColor: "rgba(139, 92, 246, 0.2)",
+              color: "#8B5CF6",
+            },
+          },
+        }}
+        aria-label={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {mode === "dark" ? <LightMode /> : <DarkMode />}
+      </IconButton>
     );
   }
 
@@ -114,62 +111,165 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
         sx={{
           color: "#6B7280",
           "&:hover": { backgroundColor: "rgba(139, 92, 246, 0.1)" },
+          ".dark &": {
+            color: "#9CA3AF",
+            "&:hover": {
+              backgroundColor: "rgba(139, 92, 246, 0.2)",
+              color: "#8B5CF6",
+            },
+          },
         }}
         aria-label={t("common.profile")}
         aria-controls={open ? "user-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
       >
-        {isMobile ? (
-          <MenuIcon />
-        ) : (
-          <Avatar sx={{ width: 32, height: 32, bgcolor: "#6B46C1", fontSize: "14px", fontWeight: 600 }}>
-            {userName[0].toUpperCase()}
-          </Avatar>
-        )}
+        <MenuIcon />
       </IconButton>
       <Menu
         id="user-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        onClick={(e) => {
+          // Don't close if clicking on language menu item or its submenu
+          const target = e.target as HTMLElement;
+          if (target.closest("#language-button") || target.closest("#language-menu")) {
+            return;
+          }
+          handleClose();
+        }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         aria-labelledby="user-menu-button"
         PaperProps={{
           sx: {
             mt: 1.5,
-            minWidth: 200,
+            minWidth: 240,
             borderRadius: "12px",
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#FFFFFF",
             ".dark &": {
               backgroundColor: "#1F2937",
+            },
+            "& .MuiMenuItem-root": {
+              color: "#111827",
+              ".dark &": {
+                color: "#F9FAFB",
+              },
+              "&:hover": {
+                backgroundColor: "rgba(139, 92, 246, 0.08)",
+                ".dark &": {
+                  backgroundColor: "rgba(139, 92, 246, 0.15)",
+                },
+              },
+            },
+            "& .MuiListItemText-primary": {
+              color: "#111827",
+              ".dark &": {
+                color: "#F9FAFB",
+              },
+            },
+            "& .MuiListItemText-secondary": {
+              color: "#6B7280",
+              ".dark &": {
+                color: "#9CA3AF",
+              },
+            },
+            "& .MuiListItemIcon-root": {
+              color: "#6B7280",
+              ".dark &": {
+                color: "#9CA3AF",
+              },
+            },
+            "& .MuiDivider-root": {
+              borderColor: "#E5E7EB",
+              ".dark &": {
+                borderColor: "#374151",
+              },
+            },
+            animation: "fadeInDown 0.2s ease-out",
+            "@keyframes fadeInDown": {
+              from: {
+                opacity: 0,
+                transform: "translateY(-8px)",
+              },
+              to: {
+                opacity: 1,
+                transform: "translateY(0)",
+              },
             },
           },
         }}
       >
-        <Box sx={{ px: 2, py: 1.5, borderBottom: "1px solid", borderColor: "divider" }}>
-          <Typography variant="body2" fontWeight={600} color="text.primary">
+        {/* User Info Section */}
+        <Box
+          sx={{
+            px: 2,
+            py: 1.5,
+            borderBottom: "1px solid",
+            borderColor: "#E5E7EB",
+            ".dark &": {
+              borderColor: "#374151",
+            },
+          }}
+        >
+          <Typography
+            variant="body2"
+            fontWeight={600}
+            sx={{
+              color: "#111827",
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              ".dark &": {
+                color: "#F9FAFB",
+              },
+            }}
+          >
             {userName}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            sx={{
+              color: "#6B7280",
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              ".dark &": {
+                color: "#9CA3AF",
+              },
+            }}
+          >
             {userEmail}
           </Typography>
         </Box>
-        <MenuItem component={Link} href="/dashboard" aria-label={t("common.home")}>
+
+        {/* Navigation Section */}
+        <MenuItem
+          component={Link}
+          href="/dashboard"
+          onClick={handleClose}
+          aria-label={t("common.home")}
+        >
           <ListItemIcon>
             <Home fontSize="small" />
           </ListItemIcon>
-          <ListItemText>{t("common.home")}</ListItemText>
+          <ListItemText primary={t("common.home")} />
         </MenuItem>
-        <MenuItem component={Link} href="/profile" aria-label={t("common.profile")}>
+        <MenuItem
+          component={Link}
+          href="/profile"
+          onClick={handleClose}
+          aria-label={t("common.profile")}
+        >
           <ListItemIcon>
             <Person fontSize="small" />
           </ListItemIcon>
-          <ListItemText>{t("common.profile")}</ListItemText>
+          <ListItemText primary={t("common.profile")} />
         </MenuItem>
+
         <Divider />
+
+        {/* Settings Section */}
         <MenuItem
           onClick={handleLanguageClick}
           id="language-button"
@@ -177,12 +277,26 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
           aria-haspopup="true"
           aria-expanded={langMenuOpen}
           aria-controls={langMenuOpen ? "language-menu" : undefined}
+          onMouseEnter={(e) => {
+            // Keep parent menu open when hovering over language item
+            e.stopPropagation();
+          }}
         >
           <ListItemIcon>
             <Language fontSize="small" />
           </ListItemIcon>
-          <ListItemText>{t("common.language")}</ListItemText>
-          <Typography variant="body2" color="text.secondary" sx={{ ml: 1, textTransform: "uppercase" }}>
+          <ListItemText primary={t("common.language")} />
+          <Typography
+            variant="body2"
+            sx={{
+              ml: 1,
+              textTransform: "uppercase",
+              color: "#6B7280",
+              ".dark &": {
+                color: "#9CA3AF",
+              },
+            }}
+          >
             {i18n.language}
           </Typography>
         </MenuItem>
@@ -190,10 +304,54 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
           anchorEl={langMenuAnchor}
           open={langMenuOpen}
           onClose={handleLanguageClose}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          transformOrigin={{ vertical: "bottom", horizontal: "right" }}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
           id="language-menu"
           aria-labelledby="language-button"
+          disableAutoFocusItem
+          MenuListProps={{
+            onMouseLeave: (e) => {
+              // Don't close on mouse leave - allow time for selection
+              e.stopPropagation();
+            },
+            onMouseEnter: (e) => {
+              // Keep menu open when mouse enters
+              e.stopPropagation();
+            },
+          }}
+          PaperProps={{
+            sx: {
+              minWidth: 160,
+              borderRadius: "12px",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#FFFFFF",
+              ".dark &": {
+                backgroundColor: "#1F2937",
+              },
+              "& .MuiMenuItem-root": {
+                color: "#111827",
+                ".dark &": {
+                  color: "#F9FAFB",
+                },
+                "&:hover": {
+                  backgroundColor: "rgba(139, 92, 246, 0.08)",
+                  ".dark &": {
+                    backgroundColor: "rgba(139, 92, 246, 0.15)",
+                  },
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "rgba(139, 92, 246, 0.12)",
+                  color: "#6B46C1",
+                  ".dark &": {
+                    backgroundColor: "rgba(139, 92, 246, 0.2)",
+                    color: "#8B5CF6",
+                  },
+                },
+              },
+            },
+          }}
         >
           {languages.map((lang) => (
             <MenuItem
@@ -202,22 +360,28 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
               selected={i18n.language === lang}
               aria-label={`Switch to ${languageNames[lang]}`}
             >
-              <ListItemText>{languageNames[lang]}</ListItemText>
+              <ListItemText primary={languageNames[lang]} />
             </MenuItem>
           ))}
         </Menu>
-        <MenuItem onClick={toggleMode} aria-label={mode === "dark" ? t("common.lightMode") : t("common.darkMode")}>
+        <MenuItem
+          onClick={toggleMode}
+          aria-label={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
           <ListItemIcon>
             {mode === "dark" ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
           </ListItemIcon>
-          <ListItemText>{mode === "dark" ? t("common.lightMode") : t("common.darkMode")}</ListItemText>
+          <ListItemText primary={mode === "dark" ? t("common.lightMode") : t("common.darkMode")} />
         </MenuItem>
+
         <Divider />
+
+        {/* Logout Section */}
         <MenuItem onClick={handleLogout} aria-label={t("common.logout")}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          <ListItemText>{t("common.logout")}</ListItemText>
+          <ListItemText primary={t("common.logout")} />
         </MenuItem>
       </Menu>
     </>

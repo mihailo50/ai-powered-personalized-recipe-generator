@@ -101,14 +101,31 @@ export function RecipePlanner() {
   return (
     <Box component="section" className="section-card" sx={{ position: "relative" }}>
       <Stack spacing={3} component="form" onSubmit={handleSubmit} sx={{ alignItems: "center" }}>
-        <div style={{ textAlign: "center", maxWidth: "800px" }}>
-          <Typography variant="h3" fontWeight={600}>
+        <Box sx={{ textAlign: "center", maxWidth: "800px", width: "100%" }}>
+          <Typography
+            variant="h3"
+            fontWeight={600}
+            sx={{
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+            }}
+          >
             {t("dashboard.planMeal")}
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              mt: 1,
+            }}
+          >
             {t("dashboard.planMealSubtitle")}
           </Typography>
-        </div>
+        </Box>
 
         <Box sx={{ width: "100%" }}>
           <Stack spacing={3}>

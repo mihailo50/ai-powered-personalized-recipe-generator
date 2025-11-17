@@ -115,9 +115,36 @@ const resources = {
 };
 
 if (!i18n.isInitialized) {
+  // Auto-detect locale from browser or localStorage
+  function detectLocale(): string {
+    if (typeof window === "undefined") return "en";
+    
+    // Check localStorage first (user preference)
+    const savedLang = localStorage.getItem("language");
+    if (savedLang && (savedLang === "en" || savedLang === "sr")) {
+      return savedLang;
+    }
+    
+    // Auto-detect from browser
+    const browserLang = navigator.language || (navigator as any).userLanguage;
+    if (browserLang) {
+      // Check for Serbian (sr, sr-RS, sr-Latn, etc.)
+      if (browserLang.toLowerCase().startsWith("sr")) {
+        return "sr";
+      }
+      // Check for Serbian country code (RS)
+      if (browserLang.includes("RS") || browserLang.includes("rs")) {
+        return "sr";
+      }
+    }
+    
+    // Default to English
+    return "en";
+  }
+
   i18n.use(initReactI18next).init({
     resources,
-    lng: typeof window !== "undefined" ? localStorage.getItem("language") || "en" : "en",
+    lng: detectLocale(),
     fallbackLng: "en",
     interpolation: {
       escapeValue: false,

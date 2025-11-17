@@ -362,16 +362,21 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
             fontWeight: 600,
             borderColor: "#E5E7EB",
             color: "#374151",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
             "&:hover": {
               borderColor: "#8B5CF6",
               backgroundColor: "rgba(139, 92, 246, 0.04)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
             },
             ".dark &": {
               borderColor: "#4B5563",
               color: "#F9FAFB",
+              backgroundColor: "#374151",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
               "&:hover": {
                 borderColor: "#8B5CF6",
                 backgroundColor: "rgba(139, 92, 246, 0.1)",
+                boxShadow: "0 4px 12px rgba(139, 92, 246, 0.2)",
               },
             },
             maxWidth: { xs: "100%", sm: "400px" },
