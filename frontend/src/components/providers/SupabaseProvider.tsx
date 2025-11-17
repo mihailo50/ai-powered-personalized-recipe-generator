@@ -22,6 +22,9 @@ export function SupabaseProvider({ children, initialSession }: SupabaseProviderP
   const [session, setSession] = useState<Session | null>(initialSession);
 
   useEffect(() => {
+    // Only set up auth listener if we're in the browser (client-side)
+    if (typeof window === "undefined") return;
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {

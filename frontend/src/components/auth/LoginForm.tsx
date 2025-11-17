@@ -7,6 +7,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, TextField, Typography, Alert, IconButton, InputAdornment, Stack, Divider } from "@mui/material";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
+import { useTranslation } from "react-i18next";
 
 type LoginFormProps = {
   showSignUpLink?: boolean;
@@ -83,9 +84,25 @@ function FloatingLabelTextField({
             transformOrigin: "top left",
             transition: "transform 0.2s ease, color 0.2s ease",
             pointerEvents: "none",
+            zIndex: 1,
             "&.Mui-focused": {
               color: "#8B5CF6",
             },
+            "&::before": isFloating
+              ? {
+                  content: '""',
+                  position: "absolute",
+                  left: "-4px",
+                  right: "-4px",
+                  top: "50%",
+                  height: "2px",
+                  backgroundColor: "#FFFFFF",
+                  zIndex: -1,
+                  ".dark &": {
+                    backgroundColor: "#1F2937",
+                  },
+                }
+              : {},
             ".dark &": {
               color: "#9CA3AF",
               "&.Mui-focused": {
@@ -145,6 +162,7 @@ function FloatingLabelTextField({
 export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
   const { supabase } = useSupabase();
   const router = useRouter();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -218,22 +236,22 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
         )}
 
         <FloatingLabelTextField
-          label="Email"
+          label={t("login.email")}
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder={t("login.emailPlaceholder")}
           disabled={isLoading || isGoogleLoading}
         />
 
         <FloatingLabelTextField
-          label="Password"
+          label={t("login.password")}
           type="text"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
+          placeholder={t("login.passwordPlaceholder")}
           disabled={isLoading || isGoogleLoading}
           showPasswordToggle
           onTogglePassword={() => setShowPassword(!showPassword)}
@@ -257,7 +275,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
                 e.currentTarget.style.textDecoration = "none";
               }}
             >
-              Forgot your password?
+              {t("common.forgotPassword")}
             </Link>
           </Box>
         )}
@@ -267,6 +285,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
           variant="contained"
           fullWidth
           disabled={isLoading || isGoogleLoading}
+          aria-label={isLoading ? t("login.signingIn") : t("common.signIn")}
           sx={{
             borderRadius: "12px",
             py: 1.5,
@@ -281,7 +300,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
             display: "block",
           }}
         >
-          {isLoading ? "Signing in…" : "Sign in"}
+          {isLoading ? t("login.signingIn") : t("common.signIn")}
         </Button>
 
         <Divider
@@ -315,6 +334,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
           fullWidth
           onClick={handleGoogleSignIn}
           disabled={isLoading || isGoogleLoading}
+          aria-label={t("login.continueWithGoogle")}
           startIcon={
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -359,7 +379,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
             display: "block",
           }}
         >
-          {isGoogleLoading ? "Connecting…" : "Continue with Google"}
+          {isGoogleLoading ? t("login.connecting") : t("login.continueWithGoogle")}
         </Button>
 
         {showSignUpLink && (
@@ -374,7 +394,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
               },
             }}
           >
-            Need an account?{" "}
+            {t("common.needAccount")}{" "}
             <Link
               href="/register"
               style={{
@@ -389,7 +409,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
                 e.currentTarget.style.textDecoration = "none";
               }}
             >
-              Create one
+              {t("common.createAccount")}
             </Link>
           </Typography>
         )}

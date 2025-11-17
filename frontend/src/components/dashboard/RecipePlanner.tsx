@@ -5,7 +5,6 @@ import {
   Alert,
   Autocomplete,
   Box,
-  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -18,6 +17,8 @@ import { FormEvent, useMemo, useState } from "react";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { generateRecipe } from "@/lib/api-client";
+import { FloatingLabelTextField } from "@/components/FloatingLabelTextField";
+import { useTranslation } from "react-i18next";
 
 type GeneratedRecipe = {
   title: string;
@@ -33,6 +34,7 @@ type GeneratedRecipe = {
 
 export function RecipePlanner() {
   const { session } = useSupabase();
+  const { t } = useTranslation();
   const [ingredients, setIngredients] = useState("");
   const [dietSelections, setDietSelections] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -101,111 +103,89 @@ export function RecipePlanner() {
       <Stack spacing={3} component="form" onSubmit={handleSubmit} sx={{ alignItems: "center" }}>
         <div style={{ textAlign: "center", maxWidth: "800px" }}>
           <Typography variant="h3" fontWeight={600}>
-            Plan tonight's meal
+            {t("dashboard.planMeal")}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Feed us your pantry list and preferences. We'll craft a complete recipe, nutrition snapshot, and shopping
-            cues.
+            {t("dashboard.planMealSubtitle")}
           </Typography>
         </div>
 
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Box sx={{ width: "100%", maxWidth: "800px" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+        <Box sx={{ width: "100%" }}>
+          <Stack spacing={3}>
+            <FloatingLabelTextField
+              label={t("dashboard.ingredients")}
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              placeholder={t("dashboard.ingredientsPlaceholder")}
+              helperText={t("dashboard.ingredientsHelper")}
+            />
+
+            <Autocomplete
+              multiple
+              freeSolo
+              options={dietSuggestions}
+              value={dietSelections}
+              onChange={(_event, newValue) => setDietSelections(newValue)}
+              renderTags={(value: readonly string[], getTagProps) =>
+                value.map((option: string, index: number) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                    key={option}
+                    sx={{ borderRadius: "8px" }}
+                  />
+                ))
+              }
+              renderInput={(params) => (
                 <TextField
+                  {...params}
                   variant="outlined"
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "12px",
                       "& fieldset": { borderColor: "var(--color-border)" },
-                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                      "&:hover fieldset": { borderColor: "#8B5CF6" },
+                      "&.Mui-focused fieldset": { borderColor: "#8B5CF6", borderWidth: "2px" },
+                      "&.Mui-focused": {
+                        backgroundColor: "rgba(139, 92, 246, 0.02)",
+                      },
                     },
-                    "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
-                  }}
-                  label="Ingredients on hand"
-                  helperText="Comma-separated list"
-                  fullWidth
-                  placeholder="e.g. tofu, chickpeas, baby spinach"
-                  value={ingredients}
-                  onChange={(event) => setIngredients(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Autocomplete
-                  multiple
-                  freeSolo
-                  options={dietSuggestions}
-                  value={dietSelections}
-                  onChange={(_event, newValue) => setDietSelections(newValue)}
-                  renderTags={(value: readonly string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                      <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                    ))
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px",
-                          "& fieldset": { borderColor: "var(--color-border)" },
-                          "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                          "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
-                        },
-                      }}
-                      label="Diet preferences"
-                      placeholder="Tap to pick or type (e.g. vegan)"
-                      helperText="Choose from suggestions or write your own"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      "& fieldset": { borderColor: "var(--color-border)" },
-                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
+                    ".dark & .MuiOutlinedInput-root": {
+                      backgroundColor: "#374151",
+                      "& fieldset": { borderColor: "#4B5563" },
+                      "&.Mui-focused": {
+                        backgroundColor: "rgba(139, 92, 246, 0.1)",
+                      },
                     },
                   }}
-                  label="Servings"
-                  type="number"
-                  fullWidth
-                  placeholder="2"
-                  value={servings}
-                  onChange={(event) => setServings(Number(event.target.value))}
+                      label={t("dashboard.dietPreferences")}
+                      placeholder={t("dashboard.dietPlaceholder")}
+                      helperText={t("dashboard.dietHelper")}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      "& fieldset": { borderColor: "var(--color-border)" },
-                      "&:hover fieldset": { borderColor: "var(--color-primary-600)" },
-                      "&.Mui-focused fieldset": { borderColor: "var(--color-primary)" },
-                    },
-                    "& .MuiInputBase-input::placeholder": { color: "var(--color-muted)" },
-                  }}
-                  label="Notes"
-                  helperText="Any cravings or constraints?"
-                  fullWidth
-                  multiline
-                  minRows={2}
-                  placeholder="e.g. Prefer something under 30 minutes with a citrus note"
-                  value={notes}
-                  onChange={(event) => setNotes(event.target.value)}
-                />
-              </Grid>
-            </Grid>
-          </Box>
+              )}
+            />
+
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
+              <FloatingLabelTextField
+                label={t("dashboard.servings")}
+                type="number"
+                value={servings.toString()}
+                onChange={(e) => setServings(Number(e.target.value) || 2)}
+                placeholder={t("dashboard.servingsPlaceholder")}
+              />
+            </Box>
+
+            <FloatingLabelTextField
+              label={t("dashboard.notes")}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder={t("dashboard.notesPlaceholder")}
+              multiline
+              rows={3}
+              helperText={t("dashboard.notesHelper")}
+            />
+          </Stack>
         </Box>
 
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%", maxWidth: "800px" }}>
@@ -222,15 +202,16 @@ export function RecipePlanner() {
           </Box>
         )}
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
+        <Box sx={{ width: "100%", mt: 2 }}>
           <button
             type="submit"
             className="btn-primary"
             disabled={isLoading}
+            style={{ maxWidth: "100%" }}
           >
-            {isLoading ? "Thinking..." : "Generate Recipe"}
+            {isLoading ? t("dashboard.thinking") : t("dashboard.generateRecipe")}
           </button>
-        </div>
+        </Box>
       </Stack>
 
       <Fade in={isLoading} unmountOnExit>
@@ -250,7 +231,7 @@ export function RecipePlanner() {
         >
           <CircularProgress size={40} color="primary" />
           <Typography variant="body1" color="text.secondary">
-            Crafting your personalized recipe…
+            {t("dashboard.crafting")}
           </Typography>
         </Box>
       </Fade>

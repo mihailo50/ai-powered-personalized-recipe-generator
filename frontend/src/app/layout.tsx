@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import { ThemeRegistry } from "@/components/ThemeRegistry";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
+import { I18nProvider } from "@/components/providers/I18nProvider";
 import { Navbar } from "@/components/Navbar";
 
 import "./globals.css";
 
-const roboto = Roboto({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-roboto",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -27,21 +28,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.variable}>
-        <SupabaseProvider initialSession={null}>
-          <ThemeRegistry>
-            <Navbar />
-            <main style={{ maxWidth: 1200, margin: "0 auto", padding: "20px", minHeight: "calc(100vh - 200px)" }}>
-              {children}
-            </main>
-            <footer className="footer">
-              <div>
-                © {new Date().getFullYear()} <strong>AI Recipe Studio</strong> |{" "}
-                <a href="/terms">Terms</a> | <a href="/privacy">Privacy</a>
-              </div>
-            </footer>
-          </ThemeRegistry>
-        </SupabaseProvider>
+      <body className={inter.variable} style={{ fontFamily: "var(--font-inter), Inter, system-ui, sans-serif" }}>
+        <I18nProvider>
+          <SupabaseProvider initialSession={null}>
+            <ThemeRegistry>
+              <Navbar />
+              <main style={{ maxWidth: 1200, margin: "0 auto", padding: "20px", minHeight: "calc(100vh - 200px)" }}>
+                {children}
+              </main>
+              <footer className="footer">
+                <div>
+                  © {new Date().getFullYear()} <strong>AI Recipe Studio</strong> |{" "}
+                  <a href="/terms">Terms</a> | <a href="/privacy">Privacy</a>
+                </div>
+              </footer>
+            </ThemeRegistry>
+          </SupabaseProvider>
+        </I18nProvider>
       </body>
     </html>
   );

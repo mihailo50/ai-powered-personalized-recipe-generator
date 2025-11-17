@@ -1,0 +1,53 @@
+{
+  "common": {
+    "welcome": "Welcome back, {{name}}",
+    "welcomeChef": "Welcome back, chef",
+    "home": "Home",
+    "profile": "Profile",
+    "logout": "Logout",
+    "language": "Language",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "createAccount": "Create one",
+    "needAccount": "Need an account?",
+    "forgotPassword": "Forgot your password?",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "copyright": "© 2025 AI Recipe Studio"
+  },
+  "login": {
+    "title": "Sign in to personalize your kitchen",
+    "subtitle": "Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your pantry.",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "signingIn": "Signing in…",
+    "continueWithGoogle": "Continue with Google",
+    "connecting": "Connecting…"
+  },
+  "dashboard": {
+    "greeting": "Generate a new recipe, revisit saved ideas, or refine your preferences.",
+    "planMeal": "Plan tonight's meal",
+    "planMealSubtitle": "Feed us your pantry list and preferences. We'll craft a complete recipe, nutrition snapshot, and shopping cues.",
+    "ingredients": "Ingredients on hand",
+    "ingredientsPlaceholder": "e.g. tofu, chickpeas, baby spinach",
+    "ingredientsHelper": "Comma-separated list",
+    "dietPreferences": "Diet preferences",
+    "dietPlaceholder": "Tap to pick or type (e.g. vegan)",
+    "dietHelper": "Choose from suggestions or write your own",
+    "servings": "Servings",
+    "servingsPlaceholder": "2",
+    "notes": "Notes",
+    "notesPlaceholder": "e.g. Prefer something under 30 minutes with a citrus note",
+    "notesHelper": "Any cravings or constraints?",
+    "generateRecipe": "Generate Recipe",
+    "thinking": "Thinking...",
+    "crafting": "Crafting your personalized recipe…",
+    "recentSearches": "Recent searches",
+    "savedRecipes": "Saved recipes"
+  }
+}
+

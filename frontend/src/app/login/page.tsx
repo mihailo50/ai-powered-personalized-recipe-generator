@@ -2,16 +2,19 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
 import { Box, Container, Typography } from "@mui/material";
 
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { useTranslation } from "react-i18next";
 
 function LoginPageContent() {
   const { session } = useSupabase();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (session) {
@@ -62,7 +65,7 @@ function LoginPageContent() {
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.06)",
             padding: { xs: "32px 24px", sm: "48px 40px" },
             width: "100%",
-            maxWidth: "480px",
+            maxWidth: "460px",
             margin: "0 auto",
             animation: "fadeInUp 0.3s ease-out",
             "@keyframes fadeInUp": {
@@ -96,7 +99,7 @@ function LoginPageContent() {
                 },
               }}
             >
-              Sign in to personalize your kitchen
+              {t("login.title")}
             </Typography>
             {/* Brand-colored accent line */}
             <Box
@@ -121,14 +124,41 @@ function LoginPageContent() {
                 },
               }}
             >
-              Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your
-              pantry.
+              {t("login.subtitle")}
             </Typography>
           </Box>
 
           <LoginForm showSignUpLink={true} />
         </Box>
       </Container>
+
+      {/* Footer */}
+      <Box
+        component="footer"
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          py: 2,
+          textAlign: "center",
+          fontSize: "12px",
+          color: "#9CA3AF",
+          zIndex: 1,
+          ".dark &": {
+            color: "#6B7280",
+          },
+        }}
+      >
+        {t("common.copyright")} ·{" "}
+        <Link href="/terms" style={{ color: "inherit", textDecoration: "none" }}>
+          {t("common.terms")}
+        </Link>{" "}
+        ·{" "}
+        <Link href="/privacy" style={{ color: "inherit", textDecoration: "none" }}>
+          {t("common.privacy")}
+        </Link>
+      </Box>
     </Box>
   );
 }

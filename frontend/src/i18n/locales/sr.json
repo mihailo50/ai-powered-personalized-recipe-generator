@@ -1,0 +1,53 @@
+{
+  "common": {
+    "welcome": "Dobrodošao nazad, {{name}}",
+    "welcomeChef": "Dobrodošao nazad, kuvare",
+    "home": "Početna",
+    "profile": "Profil",
+    "logout": "Odjava",
+    "language": "Jezik",
+    "darkMode": "Tamni režim",
+    "lightMode": "Svetli režim",
+    "signIn": "Prijavi se",
+    "signUp": "Registruj se",
+    "createAccount": "Kreiraj nalog",
+    "needAccount": "Treba ti nalog?",
+    "forgotPassword": "Zaboravio si lozinku?",
+    "terms": "Uslovi",
+    "privacy": "Privatnost",
+    "copyright": "© 2025 AI Recipe Studio"
+  },
+  "login": {
+    "title": "Prijavite se da personalizujete svoju kuhinju",
+    "subtitle": "Sačuvajte svoje preference, generišite recepte na zahtev i napravite pametnije liste za kupovinu—pokretano AI-jem i vašom ostavom.",
+    "email": "Email",
+    "password": "Lozinka",
+    "emailPlaceholder": "vi@primer.com",
+    "passwordPlaceholder": "Unesite lozinku",
+    "signingIn": "Prijavljivanje…",
+    "continueWithGoogle": "Nastavi sa Google-om",
+    "connecting": "Povezivanje…"
+  },
+  "dashboard": {
+    "greeting": "Generišite novi recept, pregledajte sačuvane ideje ili prilagodite svoje preference.",
+    "planMeal": "Planiraj večerašnji obrok",
+    "planMealSubtitle": "Dajte nam listu iz vaše ostave i preference. Napravićemo kompletan recept, pregled nutritivnih vrednosti i savete za kupovinu.",
+    "ingredients": "Sastojci koje imate",
+    "ingredientsPlaceholder": "npr. tofu, slanutak, mladi špinat",
+    "ingredientsHelper": "Lista odvojena zarezima",
+    "dietPreferences": "Dijetne preference",
+    "dietPlaceholder": "Dodirnite da izaberete ili ukucajte (npr. vegan)",
+    "dietHelper": "Izaberite iz predloga ili napišite svoje",
+    "servings": "Porcije",
+    "servingsPlaceholder": "2",
+    "notes": "Napomene",
+    "notesPlaceholder": "npr. Preferiram nešto ispod 30 minuta sa citrusnim notama",
+    "notesHelper": "Ima li želja ili ograničenja?",
+    "generateRecipe": "Generiši Recept",
+    "thinking": "Razmišljam...",
+    "crafting": "Kreiram vaš personalizovani recept…",
+    "recentSearches": "Skorašnje pretrage",
+    "savedRecipes": "Sačuvani recepti"
+  }
+}
+

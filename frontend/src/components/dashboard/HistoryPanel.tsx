@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { fetchHistory } from "@/lib/api-client";
+import { useTranslation } from "react-i18next";
 
 type HistoryItem = {
   id: string;
@@ -15,6 +16,7 @@ type HistoryItem = {
 
 export function HistoryPanel() {
   const { session } = useSupabase();
+  const { t } = useTranslation();
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +54,8 @@ export function HistoryPanel() {
 
   return (
     <Box component="section" className="section-card">
-      <Typography variant="h5" fontWeight={600} sx={{ mb: 2 }}>
-        Recent searches
+      <Typography variant="h5" fontWeight={600} sx={{ mb: 2 }} component="h2">
+        {t("dashboard.recentSearches")}
       </Typography>
       {isLoading && <CircularProgress size={24} />}
       {error && (

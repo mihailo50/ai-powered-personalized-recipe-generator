@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { fetchRecipes, toggleFavorite } from "@/lib/api-client";
+import { useTranslation } from "react-i18next";
 
 type RecipeSummary = {
   id: string;
@@ -35,6 +36,7 @@ type Scope = "mine" | "favorites";
 
 export function SavedRecipesPanel() {
   const { session } = useSupabase();
+  const { t } = useTranslation();
   const [scope, setScope] = useState<Scope>("mine");
   const [recipes, setRecipes] = useState<RecipeSummary[]>([]);
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
@@ -113,8 +115,8 @@ export function SavedRecipesPanel() {
   return (
     <Box component="section" className="section-card">
       <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h5" fontWeight={600}>
-          Saved recipes
+        <Typography variant="h5" fontWeight={600} component="h2">
+          {t("dashboard.savedRecipes")}
         </Typography>
         <ToggleButtonGroup
           size="small"

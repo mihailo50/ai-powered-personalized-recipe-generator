@@ -4,7 +4,11 @@ import { IconButton } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useTheme } from "@/components/providers/ThemeProvider";
 
-export function ThemeToggle() {
+type ThemeToggleProps = {
+  inMenu?: boolean;
+};
+
+export function ThemeToggle({ inMenu = false }: ThemeToggleProps) {
   const { mode, toggleMode } = useTheme();
 
   return (
@@ -12,10 +16,14 @@ export function ThemeToggle() {
       onClick={toggleMode}
       sx={{
         color: "#6B7280",
-        position: "absolute",
-        top: { xs: 16, sm: 24 },
-        right: { xs: 16, sm: 24 },
-        zIndex: 10,
+        ...(inMenu
+          ? {}
+          : {
+              position: "absolute",
+              top: { xs: 16, sm: 24 },
+              right: { xs: 16, sm: 24 },
+              zIndex: 10,
+            }),
         "&:hover": {
           backgroundColor: "rgba(139, 92, 246, 0.1)",
           color: "#8B5CF6",
