@@ -26,6 +26,14 @@ class SupabaseJWTAuthentication(BaseAuthentication):
 
     keyword = "Bearer"
 
+    @staticmethod
+    def _login_detail(code: str, message: str) -> dict:
+        return {
+            "code": code,
+            "detail": message,
+            "login_url": getattr(settings, "FRONTEND_LOGIN_URL", "/login"),
+        }
+
     def authenticate(self, request):
         auth_header = request.META.get("HTTP_AUTHORIZATION")
         if not auth_header:
@@ -34,7 +42,9 @@ class SupabaseJWTAuthentication(BaseAuthentication):
         try:
             scheme, token = auth_header.split()
         except ValueError as exc:  # pragma: no cover - defensive path
-            raise exceptions.AuthenticationFailed("Invalid Authorization header.") from exc
+            raise exceptions.AuthenticationFailed(
+                detail=self._login_detail("invalid_authorization_header", "Invalid Authorization header.")
+            ) from exc
 
         if scheme.lower() != self.keyword.lower():
             return None
@@ -45,7 +55,9 @@ class SupabaseJWTAuthentication(BaseAuthentication):
             or getattr(settings, "SUPABASE_ANON_KEY", None)
         )
         if not secret:
-            raise exceptions.AuthenticationFailed("Supabase JWT secret is not configured.")
+            raise exceptions.AuthenticationFailed(
+                detail=self._login_detail("server_configuration_error", "Supabase JWT secret is not configured.")
+            )
 
         try:
             payload = jwt.decode(
@@ -55,13 +67,20 @@ class SupabaseJWTAuthentication(BaseAuthentication):
                 options={"verify_aud": False},
             )
         except Exception as exc:  # pragma: no cover - JWT library handles specifics
-            raise exceptions.AuthenticationFailed(f"Invalid Supabase token: {exc}") from exc
+            raise exceptions.AuthenticationFailed(
+                detail=self._login_detail("invalid_token", f"Invalid Supabase token: {exc}")
+            ) from exc
 
         user_id = payload.get("sub") or payload.get("user_id")
         if not user_id:
-            raise exceptions.AuthenticationFailed("Supabase token missing subject.")
+            raise exceptions.AuthenticationFailed(
+                detail=self._login_detail("invalid_token", "Supabase token missing subject.")
+            )
 
         email = payload.get("email")
         user = SupabaseUser(id=user_id, email=email)
         return (user, token)
+
+    def authenticate_header(self, request):
+        return 'Bearer realm="supabase"'
 

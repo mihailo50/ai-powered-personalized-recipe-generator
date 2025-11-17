@@ -116,9 +116,21 @@ class SupabaseProtectedAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def permission_denied(self, request, message=None, code=None):
+        message = message or "Authentication credentials were not provided."
         if self.request.successful_authenticator is None:
-            raise exceptions.NotAuthenticated(detail=message)
-        raise exceptions.PermissionDenied(detail=message)
+            raise exceptions.NotAuthenticated(
+                detail={
+                    "code": "auth_required",
+                    "detail": message,
+                    "login_url": getattr(settings, "FRONTEND_LOGIN_URL", "/login"),
+                }
+            )
+        raise exceptions.PermissionDenied(
+            detail={
+                "code": "permission_denied",
+                "detail": message,
+            }
+        )
 
 
 class RecipeListView(SupabaseProtectedAPIView):

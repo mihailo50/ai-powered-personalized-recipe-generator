@@ -189,6 +189,8 @@ REST_FRAMEWORK = {
     ],
 }
 
+FRONTEND_LOGIN_URL = os.getenv("FRONTEND_LOGIN_URL", "/login")
+
 CORS_DEFAULT_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
