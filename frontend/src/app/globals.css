@@ -29,6 +29,25 @@ body {
   --card-pad-small: 10px;
 }
 
+/* Dark mode */
+.dark {
+  --color-bg: #111827;
+  --color-surface: #1F2937;
+  --color-border: #374151;
+  --color-text: #F9FAFB;
+  --color-muted: #9CA3AF;
+  --color-muted-bg: #1F2937;
+  --color-info-bg: #374151;
+  --color-nav-bg: #111827;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-button: 0 4px 12px rgba(107, 70, 193, 0.4);
+}
+
+.dark body {
+  background: #111827;
+  color: #F9FAFB;
+}
+
 /* Navbar */
 .navbar {
   position: sticky;

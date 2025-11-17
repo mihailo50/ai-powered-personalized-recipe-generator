@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Link from "next/link";
+import { Box, Container, Typography } from "@mui/material";
 
-import { AuthForm } from "@/components/auth/AuthForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const { session } = useSupabase();
   const router = useRouter();
 
@@ -18,21 +20,123 @@ export default function LoginPage() {
   }, [session, router]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "24px", maxWidth: "500px", margin: "0 auto" }}>
-      <div className="section-card" style={{ width: "100%" }}>
-        <h1 style={{ marginBottom: "8px", textAlign: "center" }}>Sign in to personalize your kitchen</h1>
-        <p className="muted" style={{ textAlign: "center", marginBottom: "24px" }}>
-          Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your pantry.
-        </p>
-        <AuthForm />
-        <p style={{ textAlign: "center", marginTop: "16px", fontSize: "14px", color: "var(--color-muted)" }}>
-          Need an account?{" "}
-          <Link href="/register" style={{ color: "var(--color-primary)", textDecoration: "none" }}>
-            Create one
-          </Link>
-        </p>
-      </div>
-    </div>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#FAFAFA",
+        position: "relative",
+        py: { xs: 4, sm: 6 },
+        px: { xs: 2, sm: 3 },
+        ".dark &": {
+          background: "#111827",
+        },
+      }}
+    >
+      <ThemeToggle />
+      {/* Subtle grain texture overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E")`,
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
+      <Container
+        maxWidth="sm"
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            background: "#FFFFFF",
+            borderRadius: "12px",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.06)",
+            padding: { xs: "32px 24px", sm: "48px 40px" },
+            width: "100%",
+            maxWidth: "480px",
+            margin: "0 auto",
+            animation: "fadeInUp 0.3s ease-out",
+            "@keyframes fadeInUp": {
+              from: {
+                opacity: 0,
+                transform: "translateY(20px)",
+              },
+              to: {
+                opacity: 1,
+                transform: "translateY(0)",
+              },
+            },
+            ".dark &": {
+              background: "#1F2937",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+            },
+          }}
+        >
+          <Box sx={{ textAlign: "center", mb: 4 }}>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: "28px", sm: "32px" },
+                fontWeight: 700,
+                lineHeight: 1.2,
+                color: "#111827",
+                mb: 1,
+                fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+                ".dark &": {
+                  color: "#F9FAFB",
+                },
+              }}
+            >
+              Sign in to personalize your kitchen
+            </Typography>
+            {/* Brand-colored accent line */}
+            <Box
+              sx={{
+                width: "48px",
+                height: "2px",
+                background: "linear-gradient(90deg, #8B5CF6, #7C3AED)",
+                margin: "16px auto 0",
+                borderRadius: "1px",
+              }}
+            />
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "16px",
+                fontWeight: 500,
+                color: "#6B7280",
+                mt: 3,
+                lineHeight: 1.6,
+                ".dark &": {
+                  color: "#9CA3AF",
+                },
+              }}
+            >
+              Save your preferences, generate recipes on demand, and build smarter shopping lists—powered by AI and your
+              pantry.
+            </Typography>
+          </Box>
+
+          <LoginForm showSignUpLink={true} />
+        </Box>
+      </Container>
+    </Box>
   );
 }
 
+export default function LoginPage() {
+  return (
+    <ThemeProvider>
+      <LoginPageContent />
+    </ThemeProvider>
+  );
+}
