@@ -8,7 +8,6 @@ import { Box, Container, Typography } from "@mui/material";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { useTranslation } from "react-i18next";
 
 function LoginPageContent() {
@@ -164,9 +163,5 @@ function LoginPageContent() {
 }
 
 export default function LoginPage() {
-  return (
-    <ThemeProvider>
-      <LoginPageContent />
-    </ThemeProvider>
-  );
+  return <LoginPageContent />;
 }
