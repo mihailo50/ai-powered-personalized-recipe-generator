@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Set
 
+from postgrest.exceptions import APIError
 from supabase import Client
 
 from .supabase_client import get_supabase_client, SupabaseConfigurationError
@@ -129,14 +130,22 @@ class SupabaseRepository:
 
     # Profiles ---------------------------------------------------------------
     def get_profile(self, user_id: str) -> Dict[str, Any]:
-        response = (
-            self.client.table("profiles")
-            .select("*")
-            .eq("id", user_id)
-            .single()
-            .execute()
-        )
-        return getattr(response, "data", {}) or {}
+        try:
+            response = (
+                self.client.table("profiles")
+                .select("*")
+                .eq("id", user_id)
+                .single()
+                .execute()
+            )
+            return getattr(response, "data", {}) or {}
+        except APIError as e:
+            # Handle case where profile doesn't exist (PGRST116: 0 rows)
+            # APIError stores error details in args[0] as a dict
+            error_details = e.args[0] if e.args and isinstance(e.args[0], dict) else {}
+            if error_details.get("code") == "PGRST116":
+                return {}
+            raise
 
     def upsert_profile(self, user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
         payload = {"id": user_id, **data}
