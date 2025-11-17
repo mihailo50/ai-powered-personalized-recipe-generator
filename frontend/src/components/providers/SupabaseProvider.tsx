@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import type { Session } from "@supabase/supabase-js";
+import type { Session, AuthChangeEvent } from "@supabase/supabase-js";
 
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
@@ -27,7 +27,7 @@ export function SupabaseProvider({ children, initialSession }: SupabaseProviderP
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: string, newSession) => {
+    } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, newSession: Session | null) => {
       setSession(newSession);
     });
 
