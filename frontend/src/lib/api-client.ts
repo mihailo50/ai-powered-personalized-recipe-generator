@@ -1,3 +1,5 @@
+import { handleAuthRedirect } from "./auth-redirect";
+
 type RecipeRequestPayload = {
   ingredients: string[];
   diet_preferences?: string[];
@@ -28,8 +30,34 @@ async function request<T>(path: string, options: RequestInit = {}, token?: strin
     headers,
   });
 
+  // Handle 401 Unauthorized responses with auth_required code
+  if (response.status === 401) {
+    try {
+      const payload = await response.json();
+      if (payload?.code === "auth_required") {
+        // Clear Supabase tokens and redirect to login
+        const loginUrl = payload.login_url ?? "/login";
+        return handleAuthRedirect(loginUrl);
+      }
+      // If it's a 401 but not auth_required, include the payload in the error
+      throw new Error(`API error (401): ${JSON.stringify(payload)}`);
+    } catch (error) {
+      // If JSON parsing fails or it's not auth_required, handle as normal error
+      if (error instanceof Error && error.message.includes("API error")) {
+        throw error;
+      }
+      // Fall through to normal error handling below
+    }
+  }
+
   if (!response.ok) {
-    const errorBody = await response.text();
+    // Try to get error body as text (body may already be consumed if we parsed JSON above)
+    let errorBody = "";
+    try {
+      errorBody = await response.text();
+    } catch {
+      errorBody = `Error ${response.status}: ${response.statusText}`;
+    }
     throw new Error(`API error (${response.status}): ${errorBody}`);
   }
 
