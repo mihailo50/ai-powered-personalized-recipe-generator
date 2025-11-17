@@ -120,30 +120,6 @@ export default function Home() {
         <Divider />
       </Container>
 
-      <Box
-        component="footer"
-        sx={{
-          borderTop: "1px solid rgba(31,31,43,0.08)",
-          py: 3,
-          backgroundColor: "#ffffff",
-        }}
-      >
-        <Container maxWidth="lg" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} AI Recipe Studio
-          </Typography>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Link href="/terms">
-              <Typography variant="body2" color="primary">
-                Terms
-              </Typography>
-            </Link>
-            <Typography variant="body2" color="text.secondary">
-              crafted with ♥
-            </Typography>
-          </Stack>
-        </Container>
-      </Box>
     </Box>
   );
 }
