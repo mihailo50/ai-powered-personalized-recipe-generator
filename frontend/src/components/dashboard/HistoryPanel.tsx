@@ -34,7 +34,7 @@ export function HistoryPanel() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load history");
+          setError(err instanceof Error ? err.message : t("dashboard.failedToLoadHistory"));
         }
       } finally {
         if (isMounted) {
@@ -49,7 +49,7 @@ export function HistoryPanel() {
   }, [session?.access_token]);
 
   if (!session?.access_token) {
-    return <Alert severity="info">Sign in to sync your searches.</Alert>;
+    return <Alert severity="info">{t("dashboard.signInToSyncSearches")}</Alert>;
   }
 
   return (
@@ -67,10 +67,10 @@ export function HistoryPanel() {
         <ul className="purple-accent" style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {history.map((item) => (
             <li key={item.id} style={{ marginBottom: "12px", padding: "12px", background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "8px" }}>
-              <div style={{ fontWeight: 600, marginBottom: "4px" }}>{item.query || "Saved search"}</div>
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>{item.query || t("dashboard.savedSearch")}</div>
               <div style={{ fontSize: "14px", color: "var(--color-muted)" }}>{new Date(item.created_at).toLocaleString()}</div>
               {item.ingredients && (
-                <div style={{ fontSize: "14px", marginTop: "4px" }}>Ingredients: {item.ingredients.join(", ")}</div>
+                <div style={{ fontSize: "14px", marginTop: "4px" }}>{t("dashboard.ingredientsLabel")}: {item.ingredients.join(", ")}</div>
               )}
             </li>
           ))}
@@ -78,7 +78,7 @@ export function HistoryPanel() {
       )}
       {!isLoading && history.length === 0 && (
         <div style={{ padding: "16px", background: "var(--color-info-bg)", borderRadius: "8px", textAlign: "center" }}>
-          <p style={{ margin: 0, color: "var(--color-muted)" }}>No searches yet. Generate a recipe to get started.</p>
+          <p style={{ margin: 0, color: "var(--color-muted)" }}>{t("dashboard.noSearchesYet")}</p>
         </div>
       )}
     </Box>

@@ -70,7 +70,7 @@ export function SavedRecipesPanel() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load recipes");
+          setError(err instanceof Error ? err.message : t("dashboard.failedToLoadRecipes"));
         }
       } finally {
         if (isMounted) {
@@ -108,7 +108,7 @@ export function SavedRecipesPanel() {
         setRecipes((response.recipes as RecipeSummary[]) || []);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to update favorite");
+      setError(err instanceof Error ? err.message : t("dashboard.unableToUpdateFavorite"));
     }
   }
 
@@ -141,8 +141,8 @@ export function SavedRecipesPanel() {
             },
           }}
         >
-          <ToggleButton value="mine">My recipes</ToggleButton>
-          <ToggleButton value="favorites">Favorites</ToggleButton>
+          <ToggleButton value="mine">{t("dashboard.myRecipes")}</ToggleButton>
+          <ToggleButton value="favorites">{t("dashboard.favorites")}</ToggleButton>
         </ToggleButtonGroup>
       </Stack>
       {isLoading && <CircularProgress size={24} />}
@@ -171,7 +171,7 @@ export function SavedRecipesPanel() {
                   {recipe.servings && (
                     <Chip
                       size="small"
-                      label={`${recipe.servings} serving${recipe.servings > 1 ? "s" : ""}`}
+                      label={`${recipe.servings} ${recipe.servings > 1 ? t("dashboard.servingsPlural") : t("dashboard.serving")}`}
                       color="primary"
                       variant="outlined"
                     />
@@ -180,12 +180,12 @@ export function SavedRecipesPanel() {
                 <Stack direction="row" spacing={2} mt={1} flexWrap="wrap">
                   {recipe.prep_time_minutes && (
                     <Typography variant="body2" color="text.secondary">
-                      Prep: {recipe.prep_time_minutes} min
+                      {t("dashboard.prep")}: {recipe.prep_time_minutes} {t("dashboard.min")}
                     </Typography>
                   )}
                   {recipe.cook_time_minutes && (
                     <Typography variant="body2" color="text.secondary">
-                      Cook: {recipe.cook_time_minutes} min
+                      {t("dashboard.cook")}: {recipe.cook_time_minutes} {t("dashboard.min")}
                     </Typography>
                   )}
                 </Stack>
@@ -197,7 +197,7 @@ export function SavedRecipesPanel() {
                   color={isFavorite ? "secondary" : "primary"}
                   onClick={() => handleToggleFavorite(recipe.id, isFavorite)}
                 >
-                  {isFavorite ? "Favorited" : "Save to favorites"}
+                  {isFavorite ? t("dashboard.favorited") : t("dashboard.saveToFavorites")}
                 </Button>
               </CardActions>
             </Card>
@@ -206,9 +206,7 @@ export function SavedRecipesPanel() {
         {!isLoading && recipes.length === 0 && (
           <div style={{ padding: "16px", background: "var(--color-info-bg)", borderRadius: "8px", textAlign: "center" }}>
             <p style={{ margin: 0, color: "var(--color-muted)" }}>
-              {scope === "favorites"
-                ? "No favorites yet. Save a recipe to see it here."
-                : "You haven't saved any recipes yet. Generate one to get started."}
+              {scope === "favorites" ? t("dashboard.noFavoritesYet") : t("dashboard.noRecipesYet")}
             </p>
           </div>
         )}

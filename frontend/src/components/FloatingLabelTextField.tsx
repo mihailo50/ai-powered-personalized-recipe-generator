@@ -79,7 +79,7 @@ export function FloatingLabelTextField({
             color: "#374151",
             fontWeight: 500,
             transform: isFloating
-              ? "translate(14px, -9px) scale(0.75)"
+              ? "translate(14px, -6px) scale(0.75)"
               : "translate(14px, 16px) scale(1)",
             transformOrigin: "top left",
             transition: "transform 0.2s ease, color 0.2s ease",
@@ -92,14 +92,14 @@ export function FloatingLabelTextField({
               ? {
                   content: '""',
                   position: "absolute",
-                  left: "-4px",
-                  right: "-4px",
+                  left: "-2px",
+                  right: "-2px",
                   top: "50%",
                   height: "2px",
                   backgroundColor: "#FFFFFF",
                   zIndex: -1,
                   ".dark &": {
-                    backgroundColor: "#1F2937",
+                    backgroundColor: "#374151",
                   },
                 }
               : {},
@@ -111,44 +111,95 @@ export function FloatingLabelTextField({
             },
           },
           "& .MuiInputBase-input": {
-            paddingTop: isFloating ? "24px" : "16px",
+            paddingTop: isFloating ? "20px" : "16px",
             paddingBottom: isFloating ? (multiline ? "16px" : "8px") : "16px",
             color: "#111827",
+            backgroundColor: "transparent",
+            outline: "none",
             "&::placeholder": {
               color: "#6B7280",
               opacity: isFloating ? 0 : 1,
               transition: "opacity 0.2s ease",
             },
+            "&:focus": {
+              outline: "none",
+            },
             ".dark &": {
-              color: "#F9FAFB",
+              color: "#F9FAFB !important",
+              backgroundColor: "transparent !important",
+              outline: "none !important",
               "&::placeholder": {
                 color: "#9CA3AF",
+              },
+              "&:focus": {
+                outline: "none !important",
               },
             },
           },
           "& .MuiOutlinedInput-root": {
             borderRadius: "12px",
             backgroundColor: "#FFFFFF",
+            outline: "none",
             "&:hover fieldset": {
               borderColor: "#8B5CF6",
             },
             "&.Mui-focused fieldset": {
               borderColor: "#8B5CF6",
               borderWidth: "2px",
+              outline: "none",
             },
             "&.Mui-focused": {
               backgroundColor: "rgba(139, 92, 246, 0.02)",
+              outline: "none",
+            },
+            "& fieldset": {
+              outline: "none",
+              borderStyle: "solid",
+              borderWidth: "1px",
+              borderRadius: "12px",
             },
             ".dark &": {
-              backgroundColor: "#374151",
+              backgroundColor: "#374151 !important",
+              outline: "none !important",
               "& fieldset": {
-                borderColor: "#4B5563",
+                borderColor: "#4B5563 !important",
+                outline: "none !important",
+                borderStyle: "solid",
+                boxShadow: "none !important",
+                borderWidth: "1px",
+                borderRadius: "12px",
               },
-              "&:hover fieldset": {
-                borderColor: "#8B5CF6",
+              "&:hover": {
+                backgroundColor: "#374151 !important",
+                outline: "none",
+                "& fieldset": {
+                  borderColor: "#8B5CF6",
+                  outline: "none",
+                  boxShadow: "none",
+                },
               },
               "&.Mui-focused": {
-                backgroundColor: "rgba(139, 92, 246, 0.1)",
+                backgroundColor: "#374151 !important",
+                outline: "none !important",
+                boxShadow: "none !important",
+                "& fieldset": {
+                  borderColor: "#8B5CF6 !important",
+                  borderWidth: "2px !important",
+                  outline: "none !important",
+                  boxShadow: "none !important",
+                  borderStyle: "solid",
+                  borderRadius: "12px",
+                  margin: "-1px",
+                },
+              },
+              "&.Mui-focused:hover": {
+                backgroundColor: "#374151 !important",
+                outline: "none",
+                boxShadow: "none",
+                "& fieldset": {
+                  outline: "none",
+                  boxShadow: "none",
+                },
               },
             },
           },
@@ -156,6 +207,17 @@ export function FloatingLabelTextField({
         label={label}
         helperText={helperText}
         aria-label={label}
+        FormHelperTextProps={{
+          sx: {
+            marginLeft: "14px",
+            marginTop: "4px",
+            fontSize: "12px",
+            color: "#6B7280",
+            ".dark &": {
+              color: "#9CA3AF",
+            },
+          },
+        }}
       />
     </Box>
   );

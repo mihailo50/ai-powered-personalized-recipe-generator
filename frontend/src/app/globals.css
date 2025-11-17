@@ -225,7 +225,7 @@ input::placeholder, textarea::placeholder {
 }
 
 input:focus, textarea:focus, select:focus {
-  outline: none;
+  outline: none !important;
   border-color: var(--color-primary);
   border-width: 2px;
   box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
@@ -234,6 +234,40 @@ input:focus, textarea:focus, select:focus {
 
 .dark input:focus, .dark textarea:focus, .dark select:focus {
   background-color: rgba(139, 92, 246, 0.1);
+  outline: none !important;
+  box-shadow: 0 0 0 0 rgba(107, 70, 193, 0.1) !important;
+}
+
+/* Prevent white outline bleed on Material-UI inputs in dark mode */
+.dark .MuiOutlinedInput-root fieldset {
+  border-color: #4B5563 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dark .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #8B5CF6 !important;
+  border-width: 2px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dark .MuiOutlinedInput-root {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dark .MuiOutlinedInput-root.Mui-focused {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dark .MuiOutlinedInput-input {
+  outline: none !important;
+}
+
+.dark .MuiOutlinedInput-input:focus {
+  outline: none !important;
 }
 
 /* Buttons */

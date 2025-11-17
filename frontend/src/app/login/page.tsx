@@ -6,7 +6,6 @@ import { Box, Container, Typography } from "@mui/material";
 
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 
 function LoginPageContent() {
@@ -36,7 +35,6 @@ function LoginPageContent() {
         },
       }}
     >
-      <ThemeToggle />
       {/* Subtle grain texture overlay */}
       <Box
         sx={{
