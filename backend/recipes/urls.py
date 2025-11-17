@@ -10,6 +10,8 @@ from .views import (
     ProfileView,
     RecommendationView,
     LogoutView,
+    LoginView,
+    AuthStatusView
 )
 
 
