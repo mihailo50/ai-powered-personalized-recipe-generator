@@ -29,6 +29,7 @@ class RecipeSuggestionRequestSerializer(serializers.Serializer):
     cuisine = serializers.CharField(required=False, allow_blank=True)
     servings = serializers.IntegerField(required=False, min_value=1, default=2)
     notes = serializers.CharField(required=False, allow_blank=True)
+    language = serializers.CharField(required=False, default="en", max_length=10)
 
     def validate(self, attrs):
         text = " ".join(

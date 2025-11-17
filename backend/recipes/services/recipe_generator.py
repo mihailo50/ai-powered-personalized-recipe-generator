@@ -71,9 +71,46 @@ class RecipeGenerator:
         exclude = ", ".join(payload.get("exclude_ingredients", [])) or "none"
         cuisine = payload.get("cuisine") or "chef's choice"
         servings = payload.get("servings", 2)
+        language = payload.get("language", "en")
+        
+        # Map language codes to full language names for better OpenAI understanding
+        language_map = {
+            "en": "English",
+            "sr": "Serbian",
+            "es": "Spanish",
+            "fr": "French",
+            "de": "German",
+            "it": "Italian",
+            "pt": "Portuguese",
+            "ru": "Russian",
+            "zh": "Chinese",
+            "ja": "Japanese",
+            "ko": "Korean",
+        }
+        language_name = language_map.get(language.lower(), "English")
+        
+        # Detect if ingredients/notes are in a non-English language
+        notes = payload.get("notes", "")
+        all_text = f"{ingredients} {notes}".lower()
+        
+        # Simple heuristic: if language is Serbian or if text contains Cyrillic/Serbian characters
+        serbian_indicators = ["ć", "č", "đ", "š", "ž", "њ", "љ", "џ"]
+        has_serbian_chars = any(char in all_text for char in serbian_indicators)
+        
+        # If Serbian is detected in text but language not set, use Serbian
+        if has_serbian_chars and language == "en":
+            language = "sr"
+            language_name = "Serbian"
+
+        language_instruction = (
+            f"IMPORTANT: Respond entirely in {language_name} language. "
+            f"All text fields (title, description, ingredient names, instructions, shopping_list) must be in {language_name}. "
+            f"Only numeric values (servings, prep_time_minutes, cook_time_minutes, nutrition values) should remain as numbers. "
+        ) if language != "en" else ""
 
         return (
             "You are an experienced private chef and nutritionist. "
+            f"{language_instruction}"
             "Generate a JSON response with keys: title, description, servings, prep_time_minutes, "
             "cook_time_minutes, ingredients (list of {name, quantity}), instructions (list of {step, description}), "
             "nutrition (calories, protein_g, carbs_g, fats_g), shopping_list (list of strings) and image_prompt. "
