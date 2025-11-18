@@ -101,3 +101,12 @@ class RegistrationViewTests(APITestCase):
         response = self.client.post("/api/auth/register/", payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_client.return_value.auth.admin.create_user.assert_called_once()
+
+    @mock.patch("recipes.views.get_supabase_client")
+    def test_duplicate_email_returns_friendly_error(self, mock_client):
+        mock_client.return_value.auth.admin.create_user.side_effect = Exception("User already registered")
+        payload = {"email": "user@gmail.com", "password": "password123", "confirm_password": "password123"}
+        response = self.client.post("/api/auth/register/", payload, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json()["detail"], "An account with this email already exists. Please sign in instead.")
+        mock_client.return_value.auth.admin.invite_user_by_email.assert_not_called()

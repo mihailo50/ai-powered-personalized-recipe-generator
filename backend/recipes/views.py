@@ -251,6 +251,18 @@ class RegistrationView(APIView):
             # Ensure the confirmation email is actually sent
             supabase.auth.admin.invite_user_by_email(email)
         except Exception as exc:  # pragma: no cover - supabase admin raises generic errors
+            message = str(exc)
+            lowered = message.lower()
+            duplicate_markers = [
+                "already registered",
+                "duplicate key value",
+                "user_already_exists",
+            ]
+            if any(marker in lowered for marker in duplicate_markers):
+                return Response(
+                    {"detail": "An account with this email already exists. Please sign in instead."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             return Response(
                 {"detail": f"Unable to create account: {exc}"},
                 status=status.HTTP_400_BAD_REQUEST,
