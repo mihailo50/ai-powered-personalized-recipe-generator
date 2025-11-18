@@ -67,6 +67,29 @@ class SupabaseRepository:
 
         return records
 
+    def get_recipe_by_id(self, recipe_id: str, user_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Fetch a single recipe by ID. If user_id is provided, also includes is_favorite status.
+        """
+        response = (
+            self.client.table("recipes")
+            .select("*")
+            .eq("id", recipe_id)
+            .execute()
+        )
+        data = getattr(response, "data", None)
+        if not data or len(data) == 0:
+            return None
+        
+        recipe = data[0]
+        
+        # Add is_favorite status if user_id is provided
+        if user_id:
+            favorite_ids = self.get_favorite_ids(user_id)
+            recipe["is_favorite"] = recipe.get("id") in favorite_ids
+        
+        return recipe
+
     # Favorites ---------------------------------------------------------------
     def set_favorite(self, user_id: str, recipe_id: str, add: bool = True) -> None:
         if add:

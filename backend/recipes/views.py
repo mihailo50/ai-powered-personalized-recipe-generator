@@ -155,6 +155,27 @@ class RecipeListView(SupabaseProtectedAPIView):
         return Response({"recipes": records}, status=status.HTTP_200_OK)
 
 
+class RecipeDetailView(SupabaseProtectedAPIView):
+
+    def get(self, request, recipe_id: str):
+        try:
+            repo = SupabaseRepository()
+        except SupabaseConfigurationError as exc:
+            return Response(
+                {"detail": str(exc)},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        recipe = repo.get_recipe_by_id(recipe_id, user_id=request.user.id)
+        if not recipe:
+            return Response(
+                {"detail": "Recipe not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        return Response({"recipe": recipe}, status=status.HTTP_200_OK)
+
+
 class SearchHistoryView(SupabaseProtectedAPIView):
 
     def get(self, request):
