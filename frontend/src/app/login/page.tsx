@@ -1,7 +1,7 @@
 "use client";
 
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
 
 import { LoginForm } from "@/components/auth/LoginForm";
@@ -133,5 +133,9 @@ function LoginPageContent() {
 }
 
 export default function LoginPage() {
-  return <LoginPageContent />;
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
+  );
 }
