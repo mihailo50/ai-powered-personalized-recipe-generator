@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 
 type LoginFormProps = {
   showSignUpLink?: boolean;
+  initialError?: string | null;
 };
 
 // Floating label TextField component
@@ -159,7 +160,7 @@ function FloatingLabelTextField({
   );
 }
 
-export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
+export function LoginForm({ showSignUpLink = true, initialError }: LoginFormProps) {
   const { supabase } = useSupabase();
   const router = useRouter();
   const { t } = useTranslation();
@@ -168,7 +169,13 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    initialError === "auth_failed"
+      ? "Google authentication failed. Please try again."
+      : initialError === "config_error"
+        ? "Authentication configuration error. Please contact support."
+        : null
+  );
   const [hasFailedLogin, setHasFailedLogin] = useState(false);
 
   const siteUrl = typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -211,7 +218,11 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo,
+          redirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       });
 
@@ -219,7 +230,7 @@ export function LoginForm({ showSignUpLink = true }: LoginFormProps) {
         setError(oauthError.message);
         setIsGoogleLoading(false);
       }
-      // If successful, user will be redirected by Supabase
+      // If successful, user will be redirected by Supabase to Google, then back to our callback
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to sign in with Google");
       setIsGoogleLoading(false);

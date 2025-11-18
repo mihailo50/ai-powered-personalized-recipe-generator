@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Box, Container, Typography } from "@mui/material";
 
@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 function LoginPageContent() {
   const { session } = useSupabase();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -124,7 +125,7 @@ function LoginPageContent() {
             </Typography>
           </Box>
 
-          <LoginForm showSignUpLink={true} />
+          <LoginForm showSignUpLink={true} initialError={searchParams.get("error")} />
         </Box>
       </Container>
     </Box>
