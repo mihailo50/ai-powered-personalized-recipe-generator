@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { fetchRecipes, toggleFavorite } from "@/lib/api-client";
@@ -93,7 +94,7 @@ export function SavedRecipesPanel() {
     if (!session?.access_token) return;
     try {
       await toggleFavorite(recipeId, isFavorite ? "remove" : "add", session.access_token);
-      setFavoriteIds((prev) => {
+      setFavoriteIds((prev: Set<string>) => {
         const next = new Set(prev);
         if (isFavorite) {
           next.delete(recipeId);
@@ -122,7 +123,7 @@ export function SavedRecipesPanel() {
           size="small"
           exclusive
           value={scope}
-          onChange={(_event, value: Scope | null) => {
+          onChange={(_event: React.MouseEvent<HTMLElement>, value: Scope | null) => {
             if (value) {
               setScope(value);
             }
@@ -189,10 +190,23 @@ export function SavedRecipesPanel() {
                 },
               }}
             >
-              <CardContent>
+              <CardContent
+                component={Link}
+                href={`/recipes/${recipe.id}`}
+                sx={{
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  "&:hover": {
+                    backgroundColor: "rgba(139, 92, 246, 0.04)",
+                    ".dark &": {
+                      backgroundColor: "rgba(139, 92, 246, 0.08)",
+                    },
+                  },
+                }}
+              >
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                   <div>
-                    <Typography variant="h6" fontWeight={600}>
+                    <Typography variant="h6" fontWeight={600} sx={{ color: "var(--color-text)" }}>
                       {recipe.title}
                     </Typography>
                     {recipe.description && (
@@ -228,7 +242,11 @@ export function SavedRecipesPanel() {
                   size="small"
                   variant={isFavorite ? "contained" : "outlined"}
                   color={isFavorite ? "secondary" : "primary"}
-                  onClick={() => handleToggleFavorite(recipe.id, isFavorite)}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleToggleFavorite(recipe.id, isFavorite);
+                  }}
                   sx={{
                     borderRadius: "8px",
                     fontWeight: 500,

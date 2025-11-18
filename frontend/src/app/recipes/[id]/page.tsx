@@ -70,7 +70,21 @@ export default function RecipeDetailPage() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "Failed to load recipe");
+          if (err instanceof Error) {
+            // Handle specific error types
+            if (err.message.includes("404")) {
+              setError("Recipe not found");
+            } else if (err.message.includes("503")) {
+              setError("Service temporarily unavailable. Please try again later.");
+            } else if (err.message.includes("401")) {
+              // Auth redirect is handled by API client
+              setError("Authentication required");
+            } else {
+              setError(err.message || "Failed to load recipe");
+            }
+          } else {
+            setError("Failed to load recipe");
+          }
         }
       } finally {
         if (isMounted) {
@@ -115,14 +129,33 @@ export default function RecipeDetailPage() {
   }
 
   if (error || !recipe) {
+    const isNotFound = error?.includes("not found") || error?.includes("404");
     return (
       <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4 } }}>
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error || "Recipe not found"}
-        </Alert>
-        <Button component={Link} href="/saved-recipes" startIcon={<ArrowBack />}>
-          Back to Saved Recipes
-        </Button>
+        <Stack spacing={2}>
+          <Alert severity={isNotFound ? "warning" : "error"} sx={{ mb: 2 }}>
+            {error || "Recipe not found"}
+          </Alert>
+          <Stack direction="row" spacing={2}>
+            <Button component={Link} href="/saved-recipes" startIcon={<ArrowBack />}>
+              Back to Saved Recipes
+            </Button>
+            {!isNotFound && (
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setError(null);
+                  if (session?.access_token && recipeId) {
+                    // Retry loading the recipe
+                    window.location.reload();
+                  }
+                }}
+              >
+                Retry
+              </Button>
+            )}
+          </Stack>
+        </Stack>
       </Container>
     );
   }
