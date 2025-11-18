@@ -2,6 +2,7 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Grid from "@mui/material/GridLegacy";
 import {
   Alert,
   Box,
@@ -10,7 +11,6 @@ import {
   CircularProgress,
   Container,
   Divider,
-  Grid,
   Stack,
   Typography,
 } from "@mui/material";
