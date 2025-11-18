@@ -41,10 +41,13 @@ Backend service for the AI-powered personalized recipe generator. This Django + 
 | `SUPABASE_URL` | Supabase project URL (required for Supabase integrations). |
 | `SUPABASE_ANON_KEY` | Supabase anon key for client-facing operations. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key for server-side management. |
-| `SUPABASE_JWT_SECRET` | Secret used to verify Supabase-issued JWTs (found in Supabase API settings). |
+| `SUPABASE_JWT_SECRET` | Secret used to verify Supabase-issued JWTs (Supabase → Settings → API → JWT Secret). |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated list of domains allowed during registration. |
 | `OPENAI_API_KEY` | Required for LangChain OpenAI integrations. |
 | `SPOONACULAR_API_KEY` | Required for nutrition data enrichment. |
+| `FRONTEND_LOGIN_URL` | Absolute URL of the login page (used in 401 payloads, e.g., `https://your-app.vercel.app/login`). |
+
+> 📘 See `docs/google-oauth-setup.md` for the full Google OAuth + Supabase configuration checklist.
 
 Additional integration keys will be documented as they are introduced.
 

@@ -60,7 +60,12 @@ class FavoriteToggleSerializer(serializers.Serializer):
 
 class ProfileUpdateSerializer(serializers.Serializer):
     display_name = serializers.CharField(required=False, allow_blank=True, max_length=120)
-    avatar_url = serializers.URLField(required=False, allow_blank=True)
+    avatar_url = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        max_length=255,
+        help_text="Accepts either a hosted avatar URL or an emoji identifier from the frontend selector.",
+    )
     diet_preferences = serializers.ListField(
         child=serializers.CharField(),
         required=False,
