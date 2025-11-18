@@ -14,15 +14,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import {
-  Home,
-  Person,
-  Language,
-  Logout,
-  Menu as MenuIcon,
-  DarkMode,
-  LightMode,
-} from "@mui/icons-material";
+import { Home, Language, Logout, Menu as MenuIcon, DarkMode, LightMode } from "@mui/icons-material";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
@@ -119,7 +111,7 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
             },
           },
         }}
-        aria-label={t("common.profile")}
+        aria-label="Open user menu"
         aria-controls={open ? "user-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -255,18 +247,6 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
           </ListItemIcon>
           <ListItemText primary={t("common.home")} />
         </MenuItem>
-        <MenuItem
-          component={Link}
-          href="/profile"
-          onClick={handleClose}
-          aria-label={t("common.profile")}
-        >
-          <ListItemIcon>
-            <Person fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary={t("common.profile")} />
-        </MenuItem>
-
         <Divider />
 
         {/* Settings Section */}
