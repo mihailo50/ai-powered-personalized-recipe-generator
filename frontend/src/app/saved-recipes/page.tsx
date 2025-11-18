@@ -58,7 +58,7 @@ export default function SavedRecipesPage() {
       setIsLoading(true);
       setError(null);
       try {
-        const params = new URLSearchParams({ scope, limit: "100" });
+        const params = new URLSearchParams({ scope, limit: "50" });
         const response = await fetchRecipes(params, session.access_token);
         if (isMounted) {
           const list = (response.recipes as RecipeSummary[]) || [];
