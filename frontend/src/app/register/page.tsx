@@ -24,18 +24,41 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
+
+  function extractBackendDetail(err: unknown): string | null {
+    if (!(err instanceof Error)) return null;
+    const match = err.message.match(/\{.*\}/);
+    if (!match) return null;
+    try {
+      const parsed = JSON.parse(match[0]);
+      return typeof parsed?.detail === "string" ? parsed.detail : null;
+    } catch {
+      return null;
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
     setMessage(null);
     setError(null);
+    setIsDuplicateEmail(false);
     try {
       const response = await registerUser(form);
       setMessage(response.message);
       setTimeout(() => router.push("/login"), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to create account.");
+      const detail = extractBackendDetail(err);
+      const duplicateMessage = "An account with this email already exists. Please sign in instead.";
+      if (detail === duplicateMessage) {
+        setIsDuplicateEmail(true);
+        setError(detail);
+      } else if (detail) {
+        setError(detail);
+      } else {
+        setError(err instanceof Error ? err.message : "Unable to create account.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -86,6 +109,17 @@ export default function RegisterPage() {
 
         {error && <Alert severity="error">{error}</Alert>}
         {message && <Alert severity="success">{message}</Alert>}
+        {isDuplicateEmail && (
+          <Button
+            component={Link}
+            href="/login"
+            variant="outlined"
+            color="secondary"
+            sx={{ borderRadius: "12px" }}
+          >
+            Go to login
+          </Button>
+        )}
 
         <Button type="submit" variant="contained" size="large" disabled={isLoading}>
           {isLoading ? "Creating account…" : "Create account"}
