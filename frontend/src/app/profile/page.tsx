@@ -1,7 +1,6 @@
 "use client";
 
-import { Container, Stack, Typography, Button } from "@mui/material";
-import Link from "next/link";
+import { Container, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
@@ -19,14 +18,9 @@ export default function ProfilePage() {
 
   return (
     <Container component="main" maxWidth="md" sx={{ py: 8 }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4" fontWeight={700}>
-          Your profile
-        </Typography>
-        <Button component={Link} href="/dashboard" variant="text">
-          Back to dashboard
-        </Button>
-      </Stack>
+      <Typography variant="h4" fontWeight={700} sx={{ mb: 3 }}>
+        Your profile
+      </Typography>
       <ProfilePanel />
     </Container>
   );

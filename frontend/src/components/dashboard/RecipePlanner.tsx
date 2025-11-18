@@ -5,6 +5,7 @@ import {
   Alert,
   Autocomplete,
   Box,
+  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -13,10 +14,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FormEvent, useMemo, useState } from "react";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { FormEvent, useMemo, useState, useEffect } from "react";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
-import { generateRecipe } from "@/lib/api-client";
+import { generateRecipe, toggleFavorite } from "@/lib/api-client";
 import { FloatingLabelTextField } from "@/components/FloatingLabelTextField";
 import { useTranslation } from "react-i18next";
 
@@ -42,8 +44,27 @@ export function RecipePlanner() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GeneratedRecipe | null>(null);
+  const [savedRecipeId, setSavedRecipeId] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+  const [loadingDots, setLoadingDots] = useState("");
 
   const token = session?.access_token;
+
+  // Animate loading dots
+  useEffect(() => {
+    if (!isLoading) {
+      setLoadingDots("");
+      return;
+    }
+    const interval = setInterval(() => {
+      setLoadingDots((prev) => {
+        if (prev === "...") return "";
+        return prev + ".";
+      });
+    }, 500);
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const banned = ["fuck", "shit", "porn", "violence", "weapon", "drug"]; // simple prompt guard
   function containsBanned(text: string) {
@@ -92,6 +113,10 @@ export function RecipePlanner() {
       };
       const response = await generateRecipe(payload, token);
       setResult(response.recipe as GeneratedRecipe);
+      if (response.saved_recipe_id) {
+        setSavedRecipeId(response.saved_recipe_id);
+      }
+      setIsFavorite(false); // Reset favorite state for new recipe
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -99,8 +124,22 @@ export function RecipePlanner() {
     }
   }
 
+  async function handleToggleFavorite() {
+    if (!savedRecipeId || !token) return;
+    setIsTogglingFavorite(true);
+    try {
+      const action = isFavorite ? "remove" : "add";
+      await toggleFavorite(savedRecipeId, action, token);
+      setIsFavorite(!isFavorite);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("dashboard.unableToUpdateFavorite"));
+    } finally {
+      setIsTogglingFavorite(false);
+    }
+  }
+
   return (
-    <Box component="section" className="section-card" sx={{ position: "relative" }}>
+    <Box component="section" className="section-card" sx={{ position: "relative", minWidth: { xs: "80%", sm: "auto" } }}>
       <Stack spacing={3} component="form" onSubmit={handleSubmit} sx={{ alignItems: "center" }}>
         <Box sx={{ textAlign: "center", maxWidth: "800px", width: "100%" }}>
           <Typography
@@ -128,7 +167,14 @@ export function RecipePlanner() {
           </Typography>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box
+          sx={{
+            width: "100%",
+            opacity: isLoading ? 0.5 : 1,
+            pointerEvents: isLoading ? "none" : "auto",
+            transition: "opacity 0.3s ease",
+          }}
+        >
           <Stack spacing={3}>
             <FloatingLabelTextField
               label={t("dashboard.ingredients")}
@@ -250,8 +296,40 @@ export function RecipePlanner() {
                 label={t("dashboard.servings")}
                 type="number"
                 value={servings.toString()}
-                onChange={(e) => setServings(Number(e.target.value) || 2)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // Allow empty string for deletion
+                  if (val === "") {
+                    setServings(0);
+                  } else {
+                    const num = Number(val);
+                    if (!isNaN(num) && num > 0) {
+                      setServings(num);
+                    }
+                  }
+                }}
+                onBlur={(e) => {
+                  // Default to 2 if empty on blur
+                  const val = Number(e.target.value);
+                  if (!val || val < 1) {
+                    setServings(2);
+                  }
+                }}
                 placeholder={t("dashboard.servingsPlaceholder")}
+                inputProps={{
+                  min: 1,
+                  step: 1,
+                }}
+                sx={{
+                  "& .MuiInputBase-input[type='number']": {
+                    MozAppearance: "textfield",
+                    "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+                      WebkitAppearance: "auto",
+                      margin: 0,
+                      display: "block",
+                    },
+                  },
+                }}
               />
             </Box>
 
@@ -299,18 +377,42 @@ export function RecipePlanner() {
             position: "absolute",
             inset: 0,
             borderRadius: 4,
-            bgcolor: "rgba(249, 248, 255, 0.8)",
-            backdropFilter: "blur(4px)",
+            background: "linear-gradient(135deg, rgba(249, 248, 255, 0.95) 0%, rgba(245, 243, 255, 0.95) 100%)",
+            backdropFilter: "blur(8px)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 2,
+            gap: 3,
+            zIndex: 10,
+            ".dark &": {
+              background: "linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%)",
+            },
           }}
         >
-          <CircularProgress size={40} color="primary" />
-          <Typography variant="body1" color="text.secondary">
+          <CircularProgress
+            size={48}
+            sx={{
+              color: "#8B5CF6",
+              ".dark &": {
+                color: "#C4B5FD",
+              },
+            }}
+          />
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "18px",
+              fontWeight: 600,
+              color: "#6B7280",
+              textAlign: "center",
+              ".dark &": {
+                color: "#E5E7EB",
+              },
+            }}
+          >
             {t("dashboard.crafting")}
+            {loadingDots}
           </Typography>
         </Box>
       </Fade>
@@ -318,12 +420,68 @@ export function RecipePlanner() {
       {result && (
         <Box sx={{ mt: 4 }}>
           <Divider sx={{ mb: 3 }} />
-          <Typography variant="h5" fontWeight={600}>
-            {result.title}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            {result.description}
-          </Typography>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            justifyContent="space-between"
+            alignItems={{ xs: "flex-start", sm: "flex-start" }}
+            spacing={2}
+            sx={{ mb: 2 }}
+          >
+            <Box sx={{ flex: 1, minWidth: 0, width: "100%" }}>
+              <Typography
+                variant="h5"
+                fontWeight={600}
+                sx={{
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  mb: 1,
+                }}
+              >
+                {result.title}
+              </Typography>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                }}
+              >
+                {result.description}
+              </Typography>
+            </Box>
+            {savedRecipeId && (
+              <Button
+                variant={isFavorite ? "contained" : "outlined"}
+                color={isFavorite ? "secondary" : "primary"}
+                startIcon={isFavorite ? <Favorite /> : <FavoriteBorder />}
+                onClick={handleToggleFavorite}
+                disabled={isTogglingFavorite}
+                sx={{
+                  borderRadius: "8px",
+                  fontWeight: 500,
+                  minWidth: { xs: "100%", sm: "120px" },
+                  flexShrink: 0,
+                  ".dark &": {
+                    borderColor: isFavorite ? undefined : "#8B5CF6",
+                    color: isFavorite ? undefined : "#8B5CF6",
+                    "&:hover": {
+                      backgroundColor: isFavorite ? undefined : "rgba(139, 92, 246, 0.1)",
+                      borderColor: isFavorite ? undefined : "#7C3AED",
+                    },
+                  },
+                }}
+              >
+                {isTogglingFavorite
+                  ? t("common.loading")
+                  : isFavorite
+                    ? t("dashboard.favorited")
+                    : t("dashboard.saveToFavorites")}
+              </Button>
+            )}
+          </Stack>
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>

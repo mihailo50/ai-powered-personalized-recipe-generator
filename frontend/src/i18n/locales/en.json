@@ -15,7 +15,8 @@
     "forgotPassword": "Forgot your password?",
     "terms": "Terms",
     "privacy": "Privacy",
-    "copyright": "© 2025 AI Recipe Studio"
+    "copyright": "© 2025 AI Recipe Studio",
+    "loading": "Loading..."
   },
   "login": {
     "title": "Sign in to personalize your kitchen",
@@ -47,7 +48,25 @@
     "thinking": "Thinking...",
     "crafting": "Crafting your personalized recipe…",
     "recentSearches": "Recent searches",
-    "savedRecipes": "Saved recipes"
+    "savedRecipes": "Saved recipes",
+    "noSearchesYet": "No searches yet. Generate a recipe to get started.",
+    "signInToSyncSearches": "Sign in to sync your searches.",
+    "failedToLoadHistory": "Failed to load history",
+    "savedSearch": "Saved search",
+    "ingredientsLabel": "Ingredients",
+    "myRecipes": "My recipes",
+    "favorites": "Favorites",
+    "noFavoritesYet": "No favorites yet. Save a recipe to see it here.",
+    "noRecipesYet": "You haven't saved any recipes yet. Generate one to get started.",
+    "failedToLoadRecipes": "Failed to load recipes",
+    "unableToUpdateFavorite": "Unable to update favorite",
+    "serving": "serving",
+    "servingsPlural": "servings",
+    "prep": "Prep",
+    "cook": "Cook",
+    "min": "min",
+    "favorited": "Favorited",
+    "saveToFavorites": "Save to favorites"
   }
 }
 

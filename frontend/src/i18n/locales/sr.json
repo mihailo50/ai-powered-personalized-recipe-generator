@@ -15,7 +15,8 @@
     "forgotPassword": "Zaboravio si lozinku?",
     "terms": "Uslovi",
     "privacy": "Privatnost",
-    "copyright": "© 2025 AI Recipe Studio"
+    "copyright": "© 2025 AI Recipe Studio",
+    "loading": "Učitavanje..."
   },
   "login": {
     "title": "Prijavite se da personalizujete svoju kuhinju",
@@ -47,7 +48,25 @@
     "thinking": "Razmišljam...",
     "crafting": "Kreiram vaš personalizovani recept…",
     "recentSearches": "Skorašnje pretrage",
-    "savedRecipes": "Sačuvani recepti"
+    "savedRecipes": "Sačuvani recepti",
+    "noSearchesYet": "Još nema pretraga. Generišite recept da počnete.",
+    "signInToSyncSearches": "Prijavite se da sinhronizujete svoje pretrage.",
+    "failedToLoadHistory": "Neuspešno učitavanje istorije",
+    "savedSearch": "Sačuvana pretraga",
+    "ingredientsLabel": "Sastojci",
+    "myRecipes": "Moji recepti",
+    "favorites": "Omiljeni",
+    "noFavoritesYet": "Još nema omiljenih. Sačuvajte recept da ga vidite ovde.",
+    "noRecipesYet": "Još niste sačuvali nijedan recept. Generišite jedan da počnete.",
+    "failedToLoadRecipes": "Neuspešno učitavanje recepta",
+    "unableToUpdateFavorite": "Neuspešno ažuriranje omiljenog",
+    "serving": "porcija",
+    "servingsPlural": "porcije",
+    "prep": "Priprema",
+    "cook": "Kuvanje",
+    "min": "min",
+    "favorited": "Omiljeno",
+    "saveToFavorites": "Sačuvaj u omiljene"
   }
 }
 

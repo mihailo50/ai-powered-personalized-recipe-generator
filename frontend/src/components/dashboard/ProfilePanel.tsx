@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { getProfile, updateProfile } from "@/lib/api-client";
+import { AvatarSelector } from "./AvatarSelector";
 
 type Profile = {
   id?: string;
@@ -94,10 +95,9 @@ export function ProfilePanel() {
           value={profile.display_name ?? ""}
           onChange={(e) => setProfile((p) => ({ ...p, display_name: e.target.value }))}
         />
-        <TextField
-          label="Avatar URL"
-          value={profile.avatar_url ?? ""}
-          onChange={(e) => setProfile((p) => ({ ...p, avatar_url: e.target.value }))}
+        <AvatarSelector
+          value={profile.avatar_url}
+          onChange={(avatar) => setProfile((p) => ({ ...p, avatar_url: avatar }))}
         />
         <TextField
           label="Calorie target"

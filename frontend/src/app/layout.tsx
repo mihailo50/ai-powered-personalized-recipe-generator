@@ -6,6 +6,7 @@ import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 import { I18nProvider } from "@/components/providers/I18nProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
+import { ErrorSuppressor } from "@/components/ErrorSuppressor";
 
 import "./globals.css";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable} style={{ fontFamily: "var(--font-inter), Inter, system-ui, sans-serif" }}>
+        <ErrorSuppressor />
         <I18nProvider>
           <ThemeProvider>
             <SupabaseProvider initialSession={null}>

@@ -9,6 +9,7 @@ type FloatingLabelTextFieldProps = {
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -19,6 +20,7 @@ type FloatingLabelTextFieldProps = {
   multiline?: boolean;
   rows?: number;
   helperText?: string;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   [key: string]: any;
 };
 
@@ -27,6 +29,7 @@ export function FloatingLabelTextField({
   type = "text",
   value,
   onChange,
+  onBlur,
   placeholder,
   required = false,
   disabled = false,
@@ -37,6 +40,7 @@ export function FloatingLabelTextField({
   multiline = false,
   rows = 1,
   helperText,
+  inputProps,
   ...props
 }: FloatingLabelTextFieldProps) {
   const [focused, setFocused] = useState(false);
@@ -51,13 +55,19 @@ export function FloatingLabelTextField({
         value={value}
         onChange={onChange}
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onBlur={(e) => {
+          setFocused(false);
+          if (onBlur) {
+            onBlur(e);
+          }
+        }}
         required={required}
         disabled={disabled}
         fullWidth={fullWidth}
         multiline={multiline}
         rows={rows}
         placeholder={isFloating ? placeholder : ""}
+        inputProps={inputProps}
         InputProps={{
           ...(showPasswordToggle && {
             endAdornment: (
