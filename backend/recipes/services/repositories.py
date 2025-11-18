@@ -128,30 +128,5 @@ class SupabaseRepository:
         data = getattr(response, "data", []) or []
         return {item.get("recipe_id") for item in data if item.get("recipe_id")}
 
-    # Profiles ---------------------------------------------------------------
-    def get_profile(self, user_id: str) -> Dict[str, Any]:
-        try:
-            response = (
-                self.client.table("profiles")
-                .select("*")
-                .eq("id", user_id)
-                .single()
-                .execute()
-            )
-            return getattr(response, "data", {}) or {}
-        except APIError as e:
-            # Handle case where profile doesn't exist (PGRST116: 0 rows)
-            # APIError stores error details in args[0] as a dict
-            error_details = e.args[0] if e.args and isinstance(e.args[0], dict) else {}
-            if error_details.get("code") == "PGRST116":
-                return {}
-            raise
-
-    def upsert_profile(self, user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        payload = {"id": user_id, **data}
-        response = self.client.table("profiles").upsert(payload).select("*").single().execute()
-        return getattr(response, "data", {}) or {}
-
-
 __all__ = ["SupabaseRepository", "SupabaseConfigurationError"]
 

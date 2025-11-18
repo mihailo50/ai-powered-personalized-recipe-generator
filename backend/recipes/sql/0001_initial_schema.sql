@@ -1,28 +1,6 @@
 -- Enable UUID generation extension (already available in Supabase but kept idempotent)
 create extension if not exists "pgcrypto";
 
--- Profiles table mirrors auth.users and stores user metadata/preference sets.
-create table if not exists public.profiles (
-    id uuid primary key references auth.users (id) on delete cascade,
-    display_name text,
-    avatar_url text,
-    diet_preferences jsonb default '[]'::jsonb,
-    allergens jsonb default '[]'::jsonb,
-    calorie_target integer,
-    created_at timestamptz default timezone('utc', now()) not null,
-    updated_at timestamptz default timezone('utc', now()) not null
-);
-
-alter table public.profiles
-    enable row level security;
-
-drop policy if exists "Individuals can manage their profile" on public.profiles;
-create policy "Individuals can manage their profile"
-    on public.profiles
-    for all
-    using (auth.uid() = id)
-    with check (auth.uid() = id);
-
 -- Recipes table stores AI generated results and manually curated entries.
 create table if not exists public.recipes (
     id uuid primary key default gen_random_uuid(),
@@ -99,20 +77,4 @@ create policy "Users can manage their search history"
     for all
     using (auth.uid() = user_id)
     with check (auth.uid() = user_id);
-
--- Update triggers to keep timestamps in sync for mutable tables.
-create or replace function public.set_updated_at()
-returns trigger as $$
-begin
-    new.updated_at = timezone('utc', now());
-    return new;
-end;
-$$ language plpgsql;
-
-drop trigger if exists profiles_set_updated_at on public.profiles;
-create trigger profiles_set_updated_at
-    before update on public.profiles
-    for each row
-    execute function public.set_updated_at();
-
 

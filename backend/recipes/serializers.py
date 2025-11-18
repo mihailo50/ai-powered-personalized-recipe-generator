@@ -58,26 +58,6 @@ class FavoriteToggleSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=("add", "remove"))
 
 
-class ProfileUpdateSerializer(serializers.Serializer):
-    display_name = serializers.CharField(required=False, allow_blank=True, max_length=120)
-    avatar_url = serializers.CharField(
-        required=False,
-        allow_blank=True,
-        max_length=255,
-        help_text="Accepts either a hosted avatar URL or an emoji identifier from the frontend selector.",
-    )
-    diet_preferences = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-        default=list,
-    )
-    allergens = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-        default=list,
-    )
-    calorie_target = serializers.IntegerField(required=False, min_value=0, allow_null=True)
-
 class RegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(min_length=8, write_only=True)
