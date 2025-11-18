@@ -16,7 +16,8 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "copyright": "© 2025 AI Recipe Studio",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "back": "Back"
   },
   "login": {
     "title": "Sign in to personalize your kitchen",
@@ -66,7 +67,10 @@
     "cook": "Cook",
     "min": "min",
     "favorited": "Favorited",
-    "saveToFavorites": "Save to favorites"
+    "saveToFavorites": "Save to favorites",
+    "instructions": "Instructions",
+    "nutrition": "Nutrition Snapshot",
+    "shoppingList": "Shopping List"
   }
 }
 

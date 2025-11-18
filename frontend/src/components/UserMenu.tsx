@@ -14,7 +14,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { Home, Language, Logout, Menu as MenuIcon, DarkMode, LightMode } from "@mui/icons-material";
+import { Home, Language, Logout, Menu as MenuIcon, DarkMode, LightMode, Bookmark } from "@mui/icons-material";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
@@ -246,6 +246,17 @@ export function UserMenu({ isMobile = false }: UserMenuProps) {
             <Home fontSize="small" />
           </ListItemIcon>
           <ListItemText primary={t("common.home")} />
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          href="/saved-recipes"
+          onClick={handleClose}
+          aria-label={t("dashboard.savedRecipes")}
+        >
+          <ListItemIcon>
+            <Bookmark fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary={t("dashboard.savedRecipes")} />
         </MenuItem>
         <Divider />
 

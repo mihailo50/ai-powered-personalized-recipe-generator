@@ -80,6 +80,26 @@ export function fetchRecipes(params: URLSearchParams, token: string) {
   return request<{ recipes: unknown[] }>(`/recipes/?${params.toString()}`, { method: "GET" }, token);
 }
 
+export async function fetchRecipeById(recipeId: string, token: string) {
+  try {
+    // Try the detail endpoint first
+    return await request<{ recipe: unknown }>(`/recipes/${recipeId}/`, { method: "GET" }, token);
+  } catch (error) {
+    // If detail endpoint doesn't exist (404), fall back to fetching from list and filtering
+    if (error instanceof Error && error.message.includes("404")) {
+      const params = new URLSearchParams({ limit: "1000" });
+      const response = await fetchRecipes(params, token);
+      const recipes = (response.recipes as Array<{ id: string }>) || [];
+      const recipe = recipes.find((r) => r.id === recipeId);
+      if (recipe) {
+        return { recipe };
+      }
+      throw new Error("Recipe not found");
+    }
+    throw error;
+  }
+}
+
 export function fetchHistory(token: string) {
   return request<{ history: unknown[] }>("/history/", { method: "GET" }, token);
 }

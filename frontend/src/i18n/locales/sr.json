@@ -16,7 +16,8 @@
     "terms": "Uslovi",
     "privacy": "Privatnost",
     "copyright": "© 2025 AI Recipe Studio",
-    "loading": "Učitavanje..."
+    "loading": "Učitavanje...",
+    "back": "Nazad"
   },
   "login": {
     "title": "Prijavite se da personalizujete svoju kuhinju",
@@ -66,7 +67,10 @@
     "cook": "Kuvanje",
     "min": "min",
     "favorited": "Omiljeno",
-    "saveToFavorites": "Sačuvaj u omiljene"
+    "saveToFavorites": "Sačuvaj u omiljene",
+    "instructions": "Uputstva",
+    "nutrition": "Nutritivni pregled",
+    "shoppingList": "Lista za kupovinu"
   }
 }
 

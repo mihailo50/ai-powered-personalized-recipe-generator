@@ -168,7 +168,7 @@ export function RecipePlanner() {
         </Box>
 
         <Box
-          sx={{
+                  sx={{
             width: "100%",
             opacity: isLoading ? 0.5 : 1,
             pointerEvents: isLoading ? "none" : "auto",
@@ -178,20 +178,20 @@ export function RecipePlanner() {
           <Stack spacing={3}>
             <FloatingLabelTextField
               label={t("dashboard.ingredients")}
-              value={ingredients}
+                  value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               placeholder={t("dashboard.ingredientsPlaceholder")}
               helperText={t("dashboard.ingredientsHelper")}
-            />
+                />
 
-            <Autocomplete
-              multiple
-              freeSolo
-              options={dietSuggestions}
-              value={dietSelections}
-              onChange={(_event, newValue) => setDietSelections(newValue)}
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => (
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={dietSuggestions}
+                  value={dietSelections}
+                  onChange={(_event, newValue) => setDietSelections(newValue)}
+                  renderTags={(value: readonly string[], getTagProps) =>
+                    value.map((option: string, index: number) => (
                   <Chip
                     variant="outlined"
                     label={option}
@@ -199,8 +199,8 @@ export function RecipePlanner() {
                     key={option}
                     sx={{ borderRadius: "8px" }}
                   />
-                ))
-              }
+                    ))
+                  }
               componentsProps={{
                 paper: {
                   sx: {
@@ -236,14 +236,14 @@ export function RecipePlanner() {
                   },
                 },
               }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      "& fieldset": { borderColor: "var(--color-border)" },
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          "& fieldset": { borderColor: "var(--color-border)" },
                       "&:hover fieldset": { borderColor: "#8B5CF6" },
                       "&.Mui-focused fieldset": { borderColor: "#8B5CF6", borderWidth: "2px" },
                       "&.Mui-focused": {
@@ -282,14 +282,14 @@ export function RecipePlanner() {
                       ".dark &": {
                         color: "#9CA3AF",
                       },
-                    },
-                  }}
+                        },
+                      }}
                   label={t("dashboard.dietPreferences")}
                   placeholder={t("dashboard.dietPlaceholder")}
                   helperText={t("dashboard.dietHelper")}
+                    />
+                  )}
                 />
-              )}
-            />
 
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
               <FloatingLabelTextField
@@ -320,7 +320,7 @@ export function RecipePlanner() {
                   min: 1,
                   step: 1,
                 }}
-                sx={{
+                  sx={{
                   "& .MuiInputBase-input[type='number']": {
                     MozAppearance: "textfield",
                     "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
@@ -328,8 +328,8 @@ export function RecipePlanner() {
                       margin: 0,
                       display: "block",
                     },
-                  },
-                }}
+                    },
+                  }}
               />
             </Box>
 
@@ -338,10 +338,10 @@ export function RecipePlanner() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t("dashboard.notesPlaceholder")}
-              multiline
+                  multiline
               rows={3}
               helperText={t("dashboard.notesHelper")}
-            />
+                />
           </Stack>
         </Box>
 
@@ -438,8 +438,8 @@ export function RecipePlanner() {
                   mb: 1,
                 }}
               >
-                {result.title}
-              </Typography>
+            {result.title}
+          </Typography>
               <Typography
                 variant="body1"
                 color="text.secondary"
@@ -449,8 +449,8 @@ export function RecipePlanner() {
                   overflowWrap: "break-word",
                 }}
               >
-                {result.description}
-              </Typography>
+            {result.description}
+          </Typography>
             </Box>
             {savedRecipeId && (
               <Button

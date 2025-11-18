@@ -7,7 +7,6 @@ import { Box, Typography, Container, Stack } from "@mui/material";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { RecipePlanner } from "@/components/dashboard/RecipePlanner";
 import { HistoryPanel } from "@/components/dashboard/HistoryPanel";
-import { SavedRecipesPanel } from "@/components/dashboard/SavedRecipesPanel";
 import { useTranslation } from "react-i18next";
 
 export default function DashboardPage() {
@@ -79,17 +78,8 @@ export default function DashboardPage() {
         {/* Recipe Planner Card */}
         <RecipePlanner />
 
-        {/* History and Saved Recipes - Stack on mobile, side by side on desktop */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-            gap: 3,
-          }}
-        >
-          <HistoryPanel />
-          <SavedRecipesPanel />
-        </Box>
+        {/* History Panel */}
+        <HistoryPanel />
       </Stack>
     </Container>
   );
